@@ -1,10 +1,13 @@
+import java.time.LocalDate;
 import java.util.Objects;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 public class Vehicle implements Comparable<Vehicle> {
     private int id;
     private String name;
     private Coordinates coordinates;
-    private java.time.LocalDateTime creationDate;
+    private LocalDate creationDate;
     private float enginePower;
     private int capacity;
     private VehicleType type;
@@ -17,7 +20,6 @@ public class Vehicle implements Comparable<Vehicle> {
     public String getName() {
         return name;
     }
-
     @Override
     public int compareTo(Vehicle vehicle) {
         if (id > vehicle.getId())
@@ -45,5 +47,30 @@ public class Vehicle implements Comparable<Vehicle> {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, coordinates, creationDate, enginePower, capacity, type, fuelType);
+    }
+
+    public Vehicle(String name, Coordinates coordinates, float enginePower, int capacity, VehicleType type, FuelType fuelType) {
+        id  = (int) (Math.random()*100);
+        creationDate = LocalDate.now();
+        this.name = name;
+        this.coordinates = coordinates;
+        this.enginePower = enginePower;
+        this.capacity = capacity;
+        this.type = type;
+        this.fuelType = fuelType;
+    }
+
+    @Override
+    public String toString() {
+        return "Vehicle{" +
+                "id=" + id +
+                ", name= " + name + '\'' +
+                ", coordinates= " + coordinates +
+                ", creationDate= " + creationDate +
+                ", enginePower= " + enginePower +
+                ", capacity= " + capacity +
+                ", type= " + type +
+                ", fuelType= " + fuelType +
+                '}';
     }
 }
