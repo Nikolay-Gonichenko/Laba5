@@ -1,32 +1,46 @@
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Scanner;
 
 public class Main {
-    private static Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
         printOut();
         System.out.println("Enter a file's name for starting");
         MyCollection collection = new MyCollection();
-        String fileName = scanner.nextLine();
-        String command = scanner.nextLine();
-        while(command!="exit"){
+        String fileName = scanner.next();
+        try {
+            collection.fillFromFile(fileName);
+        } catch (IOException e) {
+            System.out.println("Something went wrong with reading xml file");
+        }
+        System.out.println("Enter a command \n");
+        String command = scanner.next();
+        while(!command.equals("exit")){
             System.out.println("Enter a command \n");
             switch (command){
                 case "help":
                     printOut();
+                    command = scanner.nextLine();
                     break;
                 case "info":
                     collection.info();
+                    command = scanner.nextLine();
                     break;
                 case "show":
                     collection.show();
+                    command = scanner.nextLine();
                     break;
                 case "add":
                     System.out.println("Please enter an element \n");
                     Vehicle vehicle = getElement();
                     collection.add(vehicle);
+                    command = scanner.nextLine();
                     break;
                 case "update":
                     System.out.println("Please enter an id of element \n");
@@ -34,39 +48,70 @@ public class Main {
                     int id = scanner.nextInt();
                     Vehicle vehicleUpdate = getElement();
                     collection.update(id,vehicleUpdate);
+                    command = scanner.nextLine();
                     break;
                 case "remove_by_id":
                     System.out.println("Please enter an id of element \n");
                     scanner.nextLine();
                     int idToRemove = scanner.nextInt();
                     collection.removeById(idToRemove);
+                    command = scanner.nextLine();
                     break;
                 case "clear":
                     collection.clear();
+                    command = scanner.nextLine();
                     break;
                 case "save":
+                    try {
+                        collection.save(fileName);
+                    } catch (FileNotFoundException e) {
+                        System.out.println("File doesn't exist. Enter a command");
+                    }finally {
+                        command = scanner.nextLine();
+                    }
                     break;
                 case "execute_script":
-                    break;
-                case "exit":
+                    System.out.println("Enter a scriptName");
+                    String scriptName = scanner.nextLine();
+                    try {
+                        collection.readScript(scriptName);
+                    } catch (FileNotFoundException e) {
+                        System.out.println("File doesn't exist. Enter command and scriptName again");
+                        continue;
+                    } catch (IOException e) {
+                        System.out.println("Command in file incorrect. Executing of file has stopped.");
+                    }finally {
+                        command = scanner.nextLine();
+                    }
                     break;
                 case "remove_first":
                     collection.removeFirst();
+                    command = scanner.nextLine();
                     break;
                 case "remove_head":
                     System.out.println(collection.showFirst());
+                    command = scanner.nextLine();
                     break;
                 case "add_if_max":
                     System.out.println("Please enter an id of element \n");
                     scanner.nextLine();
                     Vehicle vehicleAddIfMax = getElement();
                     collection.addIfMax(vehicleAddIfMax);
+                    command = scanner.nextLine();
                     break;
                 case "remove_any_by_fuel_type":
+                    System.out.println("Enter a FuelType");
+                    String fuelType = scanner.nextLine();
+                    collection.removeByFuelType(fuelType);
+                    command = scanner.nextLine();
                     break;
                 case "max_by_name":
+                    System.out.println("MaxName Element is "+collection.getMaxName());
+                    command = scanner.nextLine();
                     break;
                 case "group_counting_by_creation_date":
+
+                    command = scanner.nextLine();
                     break;
             }
         }
@@ -109,7 +154,7 @@ public class Main {
         System.out.println("Choose type of fuel: "+ FuelType.showAllValues());
         scanner.nextLine();
         String fuelType = scanner.next();
-        Vehicle vehicle = new Vehicle(name,coordinates,enginePower,capacity,VehicleType.valueOf(vehicleType),FuelType.valueOf(fuelType));
+        Vehicle vehicle = new Vehicle(name, coordinates, enginePower, capacity, VehicleType.valueOf(vehicleType), FuelType.valueOf(fuelType));
         return vehicle;
     }
 }

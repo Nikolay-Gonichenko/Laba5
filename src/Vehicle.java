@@ -10,7 +10,7 @@ public class Vehicle implements Comparable<Vehicle> {
     private LocalDate creationDate;
     private float enginePower;
     private int capacity;
-    private VehicleType type;
+    private VehicleType vehicleType;
     private FuelType fuelType;
 
     public int getId() {
@@ -20,6 +20,11 @@ public class Vehicle implements Comparable<Vehicle> {
     public String getName() {
         return name;
     }
+
+    public FuelType getFuelType() {
+        return fuelType;
+    }
+
     @Override
     public int compareTo(Vehicle vehicle) {
         if (id > vehicle.getId())
@@ -40,13 +45,13 @@ public class Vehicle implements Comparable<Vehicle> {
                 Objects.equals(name, vehicle.name) &&
                 Objects.equals(coordinates, vehicle.coordinates) &&
                 Objects.equals(creationDate, vehicle.creationDate) &&
-                type == vehicle.type &&
+                vehicleType == vehicle.vehicleType &&
                 fuelType == vehicle.fuelType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, coordinates, creationDate, enginePower, capacity, type, fuelType);
+        return Objects.hash(id, name, coordinates, creationDate, enginePower, capacity, vehicleType, fuelType);
     }
 
     public Vehicle(String name, Coordinates coordinates, float enginePower, int capacity, VehicleType type, FuelType fuelType) {
@@ -56,7 +61,7 @@ public class Vehicle implements Comparable<Vehicle> {
         this.coordinates = coordinates;
         this.enginePower = enginePower;
         this.capacity = capacity;
-        this.type = type;
+        this.vehicleType = type;
         this.fuelType = fuelType;
     }
 
@@ -69,7 +74,7 @@ public class Vehicle implements Comparable<Vehicle> {
                 ", creationDate= " + creationDate +
                 ", enginePower= " + enginePower +
                 ", capacity= " + capacity +
-                ", type= " + type +
+                ", type= " + vehicleType +
                 ", fuelType= " + fuelType +
                 '}';
     }

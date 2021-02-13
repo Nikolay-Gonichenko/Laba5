@@ -1,5 +1,5 @@
 public enum FuelType {
-    KEROSENE("Kerosine"),
+    KEROSENE("Kerosene"),
     NUCLEAR("Nuclear"),
     PLASMA("Plasma");
     private final String name;
