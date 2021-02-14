@@ -1,12 +1,12 @@
 /**
- * Enum of VEhicleType
+ * Enum of VehicleType
  */
 public enum VehicleType {
-    HELICOPTER("Helicopter"),
-    SUBMARINE("Submarine"),
-    CHOPPER("Chopper"),
-    HOVERBOARD("Hoverboard"),
-    SPACESHIP("Spaceship");
+    HELICOPTER("HELICOPTER"),
+    SUBMARINE("SUBMARINE"),
+    CHOPPER("CHOPPER"),
+    HOVERBOARD("HOVERBOARD"),
+    SPACESHIP("SPACESHIP");
 
     private String name;
 

@@ -89,15 +89,14 @@ public class Vehicle implements Comparable<Vehicle> {
 
     @Override
     public String toString() {
-        return "Vehicle{" +
-                "id=" + id +
-                ", name= " + name + '\'' +
-                ", coordinates= " + coordinates +
-                ", creationDate= " + creationDate +
-                ", enginePower= " + enginePower +
-                ", capacity= " + capacity +
-                ", type= " + vehicleType +
-                ", fuelType= " + fuelType +
-                '}';
+        return "Vehicle " +
+                "id:" + id +
+                ", name: " + name +
+                ", coordinates: " + coordinates.toString() +
+                ", creationDate: " + creationDate +
+                ", enginePower: " + enginePower +
+                ", capacity: " + capacity +
+                ", vehicleType: " + vehicleType +
+                ", fuelType: " + fuelType;
     }
 }

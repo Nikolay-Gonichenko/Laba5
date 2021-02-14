@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 /**
- * @author Gonichenko Nikolay
+ * @author Gonichenko Nikolay R3136
  * This is main class
  */
 public class Main {
@@ -17,7 +17,7 @@ public class Main {
         printOut();
         System.out.println("Enter a file's name for starting");
         MyCollection collection = new MyCollection();
-        String fileName = scanner.next();
+        String fileName = scanner.nextLine();
         boolean checkFile = false;
         while(!checkFile){
             try {
@@ -28,55 +28,45 @@ public class Main {
                 fileName = scanner.nextLine();
             }
         }
-        System.out.println("Enter a command \n");
-        String command = scanner.next();
+        System.out.println("Enter a command");
+        String command = scanner.nextLine();
         while(!command.equals("exit")){
-            System.out.println("Enter a command \n");
             switch (command){
                 case "help":
                     printOut();
-                    command = scanner.nextLine();
                     break;
                 case "info":
                     collection.info();
-                    command = scanner.nextLine();
                     break;
                 case "show":
                     collection.show();
-                    command = scanner.nextLine();
                     break;
                 case "add":
-                    System.out.println("Please enter an element \n");
+                    System.out.println("Please enter an element");
                     Vehicle vehicle = getElement();
                     collection.add(vehicle);
-                    command = scanner.nextLine();
                     break;
                 case "update":
-                    System.out.println("Please enter an id of element \n");
+                    System.out.println("Please enter an id of element ");
                     scanner.nextLine();
                     int id = scanner.nextInt();
                     Vehicle vehicleUpdate = getElement();
                     collection.update(id,vehicleUpdate);
-                    command = scanner.nextLine();
                     break;
                 case "remove_by_id":
-                    System.out.println("Please enter an id of element \n");
+                    System.out.println("Please enter an id of element ");
                     scanner.nextLine();
                     int idToRemove = scanner.nextInt();
                     collection.removeById(idToRemove);
-                    command = scanner.nextLine();
                     break;
                 case "clear":
                     collection.clear();
-                    command = scanner.nextLine();
                     break;
                 case "save":
                     try {
                         collection.save(fileName);
                     } catch (FileNotFoundException e) {
                         System.out.println("File doesn't exist. Enter a command");
-                    }finally {
-                        command = scanner.nextLine();
                     }
                     break;
                 case "execute_script":
@@ -89,34 +79,26 @@ public class Main {
                         continue;
                     } catch (IOException e) {
                         System.out.println("Command in file incorrect. Executing of file has stopped.");
-                    }finally {
-                        command = scanner.nextLine();
                     }
                     break;
                 case "remove_first":
                     collection.removeFirst();
-                    command = scanner.nextLine();
                     break;
                 case "remove_head":
                     System.out.println(collection.showFirst());
-                    command = scanner.nextLine();
                     break;
                 case "add_if_max":
-                    System.out.println("Please enter an id of element \n");
-                    scanner.nextLine();
+                    System.out.println("Please enter an id of element");
                     Vehicle vehicleAddIfMax = getElement();
                     collection.addIfMax(vehicleAddIfMax);
-                    command = scanner.nextLine();
                     break;
                 case "remove_any_by_fuel_type":
                     System.out.println("Enter a FuelType");
                     String fuelType = scanner.nextLine();
                     collection.removeByFuelType(fuelType);
-                    command = scanner.nextLine();
                     break;
                 case "max_by_name":
                     System.out.println("MaxName Element is "+collection.getMaxName());
-                    command = scanner.nextLine();
                     break;
                 case "group_counting_by_creation_date":
                     Map<LocalDate,Integer> LocalDateMap = collection.groupByCreationDate();
@@ -124,9 +106,10 @@ public class Main {
                     for (LocalDate key:keys){
                         System.out.println("Creation date is "+key+" .The amounts is "+LocalDateMap.get(key));
                     }
-                    command = scanner.nextLine();
                     break;
             }
+            System.out.println("Enter a command");
+            command = scanner.nextLine();
         }
     }
 
@@ -159,23 +142,18 @@ public class Main {
      */
     public static Vehicle getElement(){
         System.out.println("Enter the name:");
-        scanner.nextLine();
-        String name = scanner.next();
+        String name = scanner.nextLine();
         System.out.println("Enter coordinates:");
-        scanner.nextLine();
         Float x = scanner.nextFloat();
         Double y = scanner.nextDouble();
         Coordinates coordinates = new Coordinates(x,y);
         System.out.println("Enter Engine power and capacity:");
-        scanner.nextLine();
         float enginePower = scanner.nextFloat();
         int capacity = scanner.nextInt();
         System.out.println("Choose type of vehicle: "+ VehicleType.showAllValues());
-        scanner.nextLine();
-        String vehicleType = scanner.next();
+        String vehicleType = scanner.nextLine();
         System.out.println("Choose type of fuel: "+ FuelType.showAllValues());
-        scanner.nextLine();
-        String fuelType = scanner.next();
+        String fuelType = scanner.nextLine();
         Vehicle vehicle = new Vehicle(name, coordinates, enginePower, capacity, VehicleType.valueOf(vehicleType), FuelType.valueOf(fuelType));
         return vehicle;
     }

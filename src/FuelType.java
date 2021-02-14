@@ -2,9 +2,9 @@
  * Enum of FuelType
  */
 public enum FuelType {
-    KEROSENE("Kerosene"),
-    NUCLEAR("Nuclear"),
-    PLASMA("Plasma");
+    KEROSENE("KEROSENE"),
+    NUCLEAR("NUCLEAR"),
+    PLASMA("PLASMA");
     private final String name;
 
     FuelType(String name) {
