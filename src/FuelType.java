@@ -1,3 +1,6 @@
+/**
+ * Enum of FuelType
+ */
 public enum FuelType {
     KEROSENE("Kerosene"),
     NUCLEAR("Nuclear"),
@@ -8,6 +11,10 @@ public enum FuelType {
         this.name = name;
     }
 
+    /**
+     * Show all values in enum
+     * @return String with all Values
+     */
     public static String showAllValues() {
         StringBuilder s = new StringBuilder("");
         for (FuelType env : FuelType.values()) {

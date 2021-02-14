@@ -1,3 +1,6 @@
+/**
+ * Coordinates of vehicle
+ */
 public class Coordinates{
     private Float x;
     private Double y;

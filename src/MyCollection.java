@@ -1,35 +1,44 @@
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-import sun.rmi.server.InactiveGroupException;
-
-import javax.swing.text.Document;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.soap.Node;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Class which contain collection of Vehicles
+ */
 public class MyCollection {
     private Queue<Vehicle> queue = new PriorityQueue<>();
+    /**
+     * Show all elements from collection
+     */
     public void show(){
         Queue<Vehicle> printQueue = queue;
         while(!printQueue.isEmpty()){
             System.out.println(printQueue.poll().toString());
         }
     }
+
+    /**
+     * Show info about collection(Type and size)
+     */
     public void info(){
         System.out.println("Type of collection is "+queue.getClass().toString()+". Size of collection is "+queue.size());
     }
 
+    /**
+     * Method adds <i>vehicle</i> to collection
+     * @param vehicle
+     */
     public void add(Vehicle vehicle) {
         queue.offer(vehicle);
     }
 
+    /**
+     * Method changes element with <i>id</i> to <i>vehicle</i>
+     * @param id
+     * @param vehicle
+     */
     public void update(int id,Vehicle vehicle) {
         Queue<Vehicle> updateQueue = new PriorityQueue<>();
         for (Vehicle vehicle1 : queue){
@@ -41,6 +50,10 @@ public class MyCollection {
         queue = updateQueue;
     }
 
+    /**
+     * Method removes element with <i>idToRemove</i>
+     * @param idToRemove
+     */
     public void removeById(int idToRemove) {
         Queue<Vehicle> updateQueue = new PriorityQueue<>();
         for (Vehicle vehicle1 : queue){
@@ -51,28 +64,53 @@ public class MyCollection {
         queue = updateQueue;
     }
 
+    /**
+     * Removes all element from collections
+     */
     public void clear() {
         queue.clear();
     }
 
+    /**
+     * Removes first element in collection
+     */
     public void removeFirst() {
         queue.poll();
     }
 
+    /**
+     * Removes and return first element in collection
+     * @return first element in collection
+     */
     public String showFirst() {
         return queue.poll().toString();
     }
+
+    /**
+     * Returns max element from collection
+     * @return max element
+     */
     private Vehicle getMax(){
         Queue<Vehicle> queueVehicle = new PriorityQueue<>(queue.size(),Collections.reverseOrder());
         return queueVehicle.poll();
     }
 
+    /**
+     * Compare <i>vehicleAddIfMax</i> and max element. If <i>vehicleAddIfMax</i> higher, puts it in collection
+     * @param vehicleAddIfMax
+     */
     public void addIfMax(Vehicle vehicleAddIfMax) {
         if (vehicleAddIfMax.compareTo(this.getMax())>0){
             queue.offer(vehicleAddIfMax);
         }
     }
 
+    /**
+     * Read and execute script which is contained in <i>scriptName</i>
+     * @param scriptName
+     * @param saveName
+     * @throws IOException
+     */
     public void readScript(String scriptName,String saveName) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(scriptName));
         String command;
@@ -144,6 +182,10 @@ public class MyCollection {
         }
     }
 
+    /**
+     * Groups collection by field <i>creationDate</i>
+     * @return Map which contains amount of elements in each group
+     */
     public Map<LocalDate,Integer> groupByCreationDate() {
         Map<LocalDate,Integer> map = new TreeMap<>();
         Queue<Vehicle> printQueue = queue;
@@ -159,6 +201,11 @@ public class MyCollection {
         return map;
     }
 
+    /**
+     * Saves collection to <i>fileName</i>
+     * @param fileName
+     * @throws FileNotFoundException
+     */
     public void save(String fileName) throws FileNotFoundException {
         FileOutputStream fos = new FileOutputStream(fileName,false);
         Queue<Vehicle> printQueue = queue;
@@ -185,17 +232,26 @@ public class MyCollection {
         }
     }
 
+    /**
+     * Removes one element with FuelType = <i>fuelType</i>
+     * @param fuelType
+     */
     public void removeByFuelType(String fuelType) {
         FuelType fuelType1 = FuelType.valueOf(fuelType);
         Queue<Vehicle> printQueue = queue;
         for (Vehicle vehicle:queue){
             if (vehicle.getFuelType().equals(fuelType1)){
                 printQueue.offer(vehicle);
+                break;
             }
         }
         queue.removeAll(printQueue);
     }
 
+    /**
+     * Returns max element by field Name
+     * @return maxName element
+     */
     public String getMaxName() {
         Queue<Vehicle> printQueue = queue;
         String s = printQueue.poll().getName();
@@ -208,6 +264,11 @@ public class MyCollection {
         return s;
     }
 
+    /**
+     * Fill collection from XML file <i>fileName</i>
+     * @param fileName
+     * @throws IOException
+     */
     public void fillFromFile(String fileName) throws  IOException {
         BufferedReader reader = new BufferedReader(new FileReader(new File(fileName)));
         String name = null;

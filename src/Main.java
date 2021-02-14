@@ -1,13 +1,18 @@
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
-import sun.rmi.server.LoaderHandler;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
-
+/**
+ * @author Gonichenko Nikolay
+ * This is main class
+ */
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
+
+    /**
+     * This is start point of program
+     * @param args
+     */
     public static void main(String[] args) {
         printOut();
         System.out.println("Enter a file's name for starting");
@@ -124,6 +129,10 @@ public class Main {
             }
         }
     }
+
+    /**
+     * Method prints the legend
+     */
     public static void printOut(){
         System.out.println("All commands: \n"
         + "help - show list of commands \n"
@@ -143,6 +152,11 @@ public class Main {
         + "max_by_name - show element with max name \n"
         + "group_counting_by_creation_date - group elements by creationDate and show amounts of each group \n");
     }
+
+    /**
+     * Method gets new Vehicle from User
+     * @return Vehicle
+     */
     public static Vehicle getElement(){
         System.out.println("Enter the name:");
         scanner.nextLine();

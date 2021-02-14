@@ -1,8 +1,9 @@
 import java.time.LocalDate;
 import java.util.Objects;
-import java.util.PriorityQueue;
-import java.util.Queue;
 
+/**
+ * Class of elements which is contained in collection
+ */
 public class Vehicle implements Comparable<Vehicle> {
     private int id;
     private String name;
