@@ -1,6 +1,7 @@
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import sun.rmi.server.InactiveGroupException;
 
 import javax.swing.text.Document;
 import javax.xml.parsers.DocumentBuilder;
@@ -72,12 +73,90 @@ public class MyCollection {
         }
     }
 
-    public void readScript(String scriptName) throws IOException {
+    public void readScript(String scriptName,String saveName) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(scriptName));
         String command;
         while ((command=reader.readLine())!=null){
-
+            if (command.equals("help")){
+                Main.printOut();
+            }else if (command.equals("info")){
+                this.info();
+            }else if (command.equals("show")){
+                this.show();
+            }else if (command.equals("add")){
+                String name = reader.readLine();
+                Float x = Float.parseFloat(reader.readLine());
+                Double y = Double.parseDouble(reader.readLine());
+                Coordinates coordinates = new Coordinates(x,y);
+                float enginePower = Float.parseFloat(reader.readLine());
+                int capacity = Integer.parseInt(reader.readLine());
+                String vehicleType = reader.readLine();
+                String fuelType = reader.readLine();
+                Vehicle vehicle = new Vehicle(name, coordinates, enginePower, capacity, VehicleType.valueOf(vehicleType), FuelType.valueOf(fuelType));
+                add(vehicle);
+            }else if (command.equals("update")){
+                int id = Integer.parseInt(reader.readLine());
+                String name = reader.readLine();
+                Float x = Float.parseFloat(reader.readLine());
+                Double y = Double.parseDouble(reader.readLine());
+                Coordinates coordinates = new Coordinates(x,y);
+                float enginePower = Float.parseFloat(reader.readLine());
+                int capacity = Integer.parseInt(reader.readLine());
+                String vehicleType = reader.readLine();
+                String fuelType = reader.readLine();
+                Vehicle vehicle = new Vehicle(name, coordinates, enginePower, capacity, VehicleType.valueOf(vehicleType), FuelType.valueOf(fuelType));
+                update(id,vehicle);
+            }else if (command.equals("remove_by_id")){
+                int id = Integer.parseInt(reader.readLine());
+                removeById(id);
+            }else if (command.equals("clear")){
+                clear();
+            }else if (command.equals("save")){
+                save(saveName);
+            }else if (command.equals("execute_script")){
+                String sName = reader.readLine();
+                readScript(sName,saveName);
+            }else if (command.equals("remove_first")){
+                removeFirst();
+            }else if (command.equals("remove_head")){
+                showFirst();
+            }else if (command.equals("add_if_max")){
+                int id = Integer.parseInt(reader.readLine());
+                String name = reader.readLine();
+                Float x = Float.parseFloat(reader.readLine());
+                Double y = Double.parseDouble(reader.readLine());
+                Coordinates coordinates = new Coordinates(x,y);
+                float enginePower = Float.parseFloat(reader.readLine());
+                int capacity = Integer.parseInt(reader.readLine());
+                String vehicleType = reader.readLine();
+                String fuelType = reader.readLine();
+                Vehicle vehicle = new Vehicle(name, coordinates, enginePower,
+                        capacity, VehicleType.valueOf(vehicleType), FuelType.valueOf(fuelType));
+                addIfMax(vehicle);
+            }else if (command.equals("remove_any_by_fuel_type")){
+                String fuelType = reader.readLine();
+                removeByFuelType(fuelType);
+            }else if (command.equals("max_by_name")){
+                getMaxName();
+            }else if (command.equals("group_counting_by_creation_date")){
+                Map<LocalDate,Integer> LocalDateMap = this.groupByCreationDate();
+            }
         }
+    }
+
+    public Map<LocalDate,Integer> groupByCreationDate() {
+        Map<LocalDate,Integer> map = new TreeMap<>();
+        Queue<Vehicle> printQueue = queue;
+        for (Vehicle vehicle:printQueue){
+            LocalDate date = vehicle.getCreationDate();
+            Integer count  = map.get(date);
+            if (count==null){
+                map.put(date,1);
+            }else{
+                map.put(date,count+1);
+            }
+        }
+        return map;
     }
 
     public void save(String fileName) throws FileNotFoundException {

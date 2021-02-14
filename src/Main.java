@@ -1,11 +1,10 @@
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+import sun.rmi.server.LoaderHandler;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.Scanner;
+import java.time.LocalDate;
+import java.util.*;
 
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
@@ -79,7 +78,7 @@ public class Main {
                     System.out.println("Enter a scriptName");
                     String scriptName = scanner.nextLine();
                     try {
-                        collection.readScript(scriptName);
+                        collection.readScript(scriptName,fileName);
                     } catch (FileNotFoundException e) {
                         System.out.println("File doesn't exist. Enter command and scriptName again");
                         continue;
@@ -115,7 +114,11 @@ public class Main {
                     command = scanner.nextLine();
                     break;
                 case "group_counting_by_creation_date":
-
+                    Map<LocalDate,Integer> LocalDateMap = collection.groupByCreationDate();
+                    Set<LocalDate> keys = LocalDateMap.keySet();
+                    for (LocalDate key:keys){
+                        System.out.println("Creation date is "+key+" .The amounts is "+LocalDateMap.get(key));
+                    }
                     command = scanner.nextLine();
                     break;
             }
