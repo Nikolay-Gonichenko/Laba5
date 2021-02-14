@@ -13,17 +13,7 @@ public class Vehicle implements Comparable<Vehicle> {
     private VehicleType vehicleType;
     private FuelType fuelType;
 
-    public int getId() {
-        return id;
-    }
 
-    public String getName() {
-        return name;
-    }
-
-    public FuelType getFuelType() {
-        return fuelType;
-    }
 
     @Override
     public int compareTo(Vehicle vehicle) {
@@ -63,6 +53,37 @@ public class Vehicle implements Comparable<Vehicle> {
         this.capacity = capacity;
         this.vehicleType = type;
         this.fuelType = fuelType;
+    }
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public FuelType getFuelType() {
+        return fuelType;
+    }
+
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    public LocalDate getCreationDate() {
+        return creationDate;
+    }
+
+    public float getEnginePower() {
+        return enginePower;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public VehicleType getVehicleType() {
+        return vehicleType;
     }
 
     @Override

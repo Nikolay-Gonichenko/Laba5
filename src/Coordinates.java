@@ -7,4 +7,11 @@ public class Coordinates{
         this.y = y;
     }
 
+    public Float getX() {
+        return x;
+    }
+
+    public Double getY() {
+        return y;
+    }
 }

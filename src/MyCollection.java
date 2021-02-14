@@ -10,6 +10,8 @@ import javax.xml.soap.Node;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MyCollection {
     private Queue<Vehicle> queue = new PriorityQueue<>();
@@ -81,15 +83,26 @@ public class MyCollection {
     public void save(String fileName) throws FileNotFoundException {
         FileOutputStream fos = new FileOutputStream(fileName,false);
         Queue<Vehicle> printQueue = queue;
+        String start = "<Vehicles> \n";
+        String finish = "</Vehicles>";
         StringBuilder s = new StringBuilder();
         while(!printQueue.isEmpty()){
-            s.append(printQueue.poll().toString());
-        }
-        byte[] buffer = s.toString().getBytes();
-        try {
-            fos.write(buffer,0,buffer.length);
-        } catch (IOException e) {
-            System.out.println("Something went wrong");
+            Vehicle vehicle = printQueue.poll();
+            s.append("  <Vehicle>\n");
+            s.append("      <Name>").append(vehicle.getName()).append("</Name>\n");
+            s.append("      <X>").append(vehicle.getCoordinates().getX()).append("</X>\n");
+            s.append("      <Y>").append(vehicle.getCoordinates().getY()).append("</Y>\n");
+            s.append("      <EnginePower>").append(vehicle.getEnginePower()).append("</EnginePower>\n");
+            s.append("      <Capacity>").append(vehicle.getCapacity()).append("</Capacity>\n");
+            s.append("      <VehicleType>").append(vehicle.getVehicleType().toString()).append("</VehicleType>\n");
+            s.append("      <FuelType>").append(vehicle.getFuelType().toString()).append("</FuelType>\n");
+            s.append("  </Vehicle>\n");
+            byte[] buffer = s.toString().getBytes();
+            try {
+                fos.write(buffer,0,buffer.length);
+            } catch (IOException e) {
+                System.out.println("Something went wrong");
+            }
         }
     }
 
@@ -116,53 +129,75 @@ public class MyCollection {
         return s;
     }
 
-    public void fillFromFile(String fileName) throws FileNotFoundException,IOException {
+    public void fillFromFile(String fileName) throws  IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(new File(fileName)));
         String name = null;
-        Float x = (float) 0;
-        Double y = (double) 0;
-        Float enginePower = (float) 0;
-        Integer capacity = 0;
-        String type = null;
+        float x = 0;
+        double y = 0;
+        float enginePower = 0;
+        int capacity = 0;
+        String vehicleType = null;
         String fuelType = null;
-        BufferedReader reader = new BufferedReader(new FileReader(fileName));
-        String c;
+        String line;
+        String regex = "\\d+";
         int count = 0;
-        while((c=reader.readLine())!=null){
-            StringBuilder stringBuilder = new StringBuilder();
-            boolean check = false;
-            for (int i=0;i<c.length();i++){
-                if (c.charAt(i)=='<'){
-                    check = false;
+        while ((line=reader.readLine())!=null) {
+            if (count == 0) {
+                final Pattern pattern = Pattern.compile("<Name>(" + regex + ")</Name>", Pattern.DOTALL);
+                final Matcher matcher = pattern.matcher(line);
+                if (matcher.find()) {
+                    name = matcher.group(1);
+                    count++;
                 }
-                if (check){
-                    stringBuilder.append(c.charAt(i));
+            } else if (count == 1) {
+                final Pattern pattern = Pattern.compile("<X>(" + regex + ")</X>", Pattern.DOTALL);
+                final Matcher matcher = pattern.matcher(line);
+                if (matcher.find()) {
+                    x = Float.parseFloat(matcher.group(1));
+                    count++;
                 }
-                if (c.charAt(i)=='>'){
-                    check = true;
+            }else if (count == 2) {
+                final Pattern pattern = Pattern.compile("<Y>(" + regex + ")</Y>", Pattern.DOTALL);
+                final Matcher matcher = pattern.matcher(line);
+                if (matcher.find()) {
+                    y = Double.parseDouble(matcher.group(1));
+                    count++;
                 }
-            }
-            if (!stringBuilder.toString().equals("")){
-                count++;
-            }
-            if (count==0){
-                name = stringBuilder.toString();
-            }else if (count==1){
-                x = Float.parseFloat(stringBuilder.toString());
-            }else if (count==2){
-                y = Double.parseDouble(stringBuilder.toString());
             }else if (count==3){
-                enginePower = Float.parseFloat(stringBuilder.toString());
+                final Pattern pattern = Pattern.compile("<EnginePowerr>(" + regex + ")</EnginePower>", Pattern.DOTALL);
+                final Matcher matcher = pattern.matcher(line);
+                if (matcher.find()) {
+                    enginePower = Float.parseFloat(matcher.group(1));
+                    count++;
+                }
             }else if (count==4){
-                capacity = Integer.parseInt(stringBuilder.toString());
+                final Pattern pattern = Pattern.compile("<Capacity>(" + regex + ")</Capacity>", Pattern.DOTALL);
+                final Matcher matcher = pattern.matcher(line);
+                if (matcher.find()) {
+                    capacity = Integer.parseInt(matcher.group(1));
+                    count++;
+                }
             }else if (count==5){
-                type = stringBuilder.toString();
+                final Pattern pattern = Pattern.compile("<VehicleType>(" + regex + ")</VehicleType>", Pattern.DOTALL);
+                final Matcher matcher = pattern.matcher(line);
+                if (matcher.find()) {
+                    vehicleType = matcher.group(1);
+                    count++;
+                }
             }else if (count==6){
-                fuelType = stringBuilder.toString();
-                count = 0;
+                final Pattern pattern = Pattern.compile("<FuelType>(" + regex + ")</FuelType>", Pattern.DOTALL);
+                final Matcher matcher = pattern.matcher(line);
+                if (matcher.find()) {
+                    fuelType = matcher.group(1);
+                    count = 0;
+                    if (name!=null){
+                        Vehicle vehicle = new Vehicle(name,new Coordinates(x,y),enginePower,
+                                capacity,VehicleType.valueOf(vehicleType),FuelType.valueOf(fuelType));
+                        this.add(vehicle);
+                    }
+
+                }
             }
         }
-        Vehicle vehicle = new Vehicle(name,new Coordinates(x,y),enginePower,
-                capacity,VehicleType.valueOf(type),FuelType.valueOf(fuelType));
-        this.add(vehicle);
     }
 }

@@ -14,10 +14,15 @@ public class Main {
         System.out.println("Enter a file's name for starting");
         MyCollection collection = new MyCollection();
         String fileName = scanner.next();
-        try {
-            collection.fillFromFile(fileName);
-        } catch (IOException e) {
-            System.out.println("Something went wrong with reading xml file");
+        boolean checkFile = false;
+        while(!checkFile){
+            try {
+                collection.fillFromFile(fileName);
+                checkFile = true;
+            } catch (IOException e) {
+                System.out.println("Something went wrong with reading xml file");
+                fileName = scanner.nextLine();
+            }
         }
         System.out.println("Enter a command \n");
         String command = scanner.next();
