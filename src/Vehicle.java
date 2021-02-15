@@ -55,6 +55,17 @@ public class Vehicle implements Comparable<Vehicle> {
         this.vehicleType = type;
         this.fuelType = fuelType;
     }
+    public Vehicle(int id, String name, Coordinates coordinates, float enginePower, int capacity, VehicleType vehicleType, FuelType fuelType) {
+        this.id = id;
+        creationDate = LocalDate.now();
+        this.name = name;
+        this.coordinates = coordinates;
+        this.enginePower = enginePower;
+        this.capacity = capacity;
+        this.vehicleType = vehicleType;
+        this.fuelType = fuelType;
+    }
+
     public int getId() {
         return id;
     }

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Vehicles>
+    <Vehicle>
+        <Name>Helicopter</Name>
+        <X>100</X>
+        <Y>100</Y>
+        <EnginePower>200</EnginePower>
+        <Capacity>359</Capacity>
+        <VehicleType>HELICOPTER</VehicleType>
+        <FuelType>NUCLEAR</FuelType>
+    </Vehicle>
+    <Vehicle>
+        <Name>Bus</Name>
+        <X>200</X>
+        <Y>200</Y>
+        <EnginePower>138</EnginePower>
+        <Capacity>22</Capacity>
+        <VehicleType>CHOPPER</VehicleType>
+        <FuelType>KEROSENE</FuelType>
+    </Vehicle>
+</Vehicles>
+

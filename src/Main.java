@@ -18,17 +18,16 @@ public class Main {
      */
     public static void main(String[] args) {
         printOut();
-        System.out.println("Enter a file's name for starting");
         MyCollection collection = new MyCollection();
-        String fileName = scanner.nextLine();
-        boolean checkFile = false;
-        while(!checkFile){
+        System.out.println("Enter a file's name for starting");
+        String fileName;
+        while(true){
+            fileName = scanner.nextLine();
             try {
                 collection.fillFromFile(fileName);
-                checkFile = true;
+                break;
             } catch (IOException e) {
-                System.out.println("Something went wrong with reading xml file");
-                fileName = scanner.nextLine();
+                System.out.println("Something went wrong with reading xml file. Enter again");
             }
         }
         System.out.println("Enter a command");
@@ -51,15 +50,63 @@ public class Main {
                     break;
                 case "update":
                     System.out.println("Please enter an id of element ");
-                    scanner.nextLine();
-                    int id = scanner.nextInt();
-                    Vehicle vehicleUpdate = MyReader.getElementFromConsole(scanner);
+                    String id_check;
+                    int id;
+                    while(true){
+                        id_check = scanner.nextLine();
+                        try{
+                            id = Integer.parseInt(id_check);
+                            if (id>0){
+                                boolean check_in_queue = false;
+                                for (Vehicle v:collection.getQueue()){
+                                    if (v.getId()==id){
+                                        check_in_queue = true;
+                                        break;
+                                    }
+                                }
+                                if (check_in_queue){
+                                    break;
+                                }else throw new IllegalArgumentException();
+                            }else{
+                                throw new NumberFormatException();
+                            }
+                        }catch (NumberFormatException e){
+                            System.out.println("Id has to be int and > 0. Try again");
+                        }catch (IllegalArgumentException e){
+                            System.out.println("You entered id of element which doesn't exist.Try again");
+                        }
+                    }
+                    Vehicle vehicleUpdate = MyReader.getElementFromConsoleToUpdate(scanner,id);
                     collection.update(id,vehicleUpdate);
                     break;
                 case "remove_by_id":
                     System.out.println("Please enter an id of element ");
-                    scanner.nextLine();
-                    int idToRemove = scanner.nextInt();
+                    String idToRemove_check;
+                    int idToRemove;
+                    while(true){
+                        idToRemove_check = scanner.nextLine();
+                        try{
+                            idToRemove = Integer.parseInt(idToRemove_check);
+                            if (idToRemove>0){
+                                boolean check_in_queue = false;
+                                for (Vehicle v:collection.getQueue()){
+                                    if (v.getId()==idToRemove){
+                                        check_in_queue = true;
+                                        break;
+                                    }
+                                }
+                                if (check_in_queue){
+                                    break;
+                                }else throw new IllegalArgumentException();
+                            }else{
+                                throw new NumberFormatException();
+                            }
+                        }catch (NumberFormatException e){
+                            System.out.println("Id has to be int and > 0. Try again");
+                        }catch (IllegalArgumentException e){
+                            System.out.println("You entered id of element which doesn't exist.Try again");
+                        }
+                    }
                     collection.removeById(idToRemove);
                     break;
                 case "clear":
@@ -67,21 +114,25 @@ public class Main {
                     break;
                 case "save":
                     try {
-                        collection.save(fileName);
-                    } catch (FileNotFoundException e) {
+                        collection.save("Output.xml");
+                        System.out.println("Data is saved to Output.xml");
+                    } catch (IOException e) {
                         System.out.println("File doesn't exist. Enter a command");
                     }
                     break;
                 case "execute_script":
                     System.out.println("Enter a scriptName");
-                    String scriptName = scanner.nextLine();
-                    try {
-                        collection.readScript(scriptName,fileName);
-                    } catch (FileNotFoundException e) {
-                        System.out.println("File doesn't exist. Enter command and scriptName again");
-                        continue;
-                    } catch (IOException e) {
-                        System.out.println("Command in file incorrect. Executing of file has stopped.");
+                    String scriptName;
+                    while(true){
+                        try {
+                            scriptName = scanner.nextLine();
+                            MyReader.readScript(scriptName,fileName,collection);
+                            break;
+                        } catch (FileNotFoundException e) {
+                            System.out.println("File doesn't exist. Enter command and scriptName again");
+                        } catch (IOException|IllegalArgumentException e) {
+                            System.out.println("Command in file incorrect. Executing of file has stopped.");
+                        }
                     }
                     break;
                 case "remove_first":
@@ -92,12 +143,33 @@ public class Main {
                     break;
                 case "add_if_max":
                     System.out.println("Please enter an id of element");
-                    Vehicle vehicleAddIfMax = MyReader.getElementFromConsole(scanner);
+                    String idCheck;
+                    int idAddIfMax;
+                    while(true){
+                        idCheck = scanner.nextLine();
+                        try{
+                            idAddIfMax = Integer.parseInt(idCheck);
+                            if (idAddIfMax>0){
+                                break;
+                            }
+                        }catch (NumberFormatException e){
+                            System.out.println("Id has to be int and > 0");
+                        }
+                    }
+                    Vehicle vehicleAddIfMax = MyReader.getElementFromConsoleToUpdate(scanner,idAddIfMax);
                     collection.addIfMax(vehicleAddIfMax);
                     break;
                 case "remove_any_by_fuel_type":
-                    System.out.println("Enter a FuelType");
-                    String fuelType = scanner.nextLine();
+                    String fuelType;
+                    while(true){
+                        try{
+                            System.out.println("Enter a FuelType");
+                            fuelType = scanner.nextLine();
+                            break;
+                        }catch (IllegalArgumentException e){
+                            System.out.println("This FuelType doesn't exist. Try again");
+                        }
+                    }
                     collection.removeByFuelType(fuelType);
                     break;
                 case "max_by_name":

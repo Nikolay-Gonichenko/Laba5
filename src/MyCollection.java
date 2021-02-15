@@ -11,6 +11,14 @@ public class MyCollection {
     private Queue<Vehicle> queue = new PriorityQueue<>();
 
     /**
+     * Returns collections. Use only for changing element by some field!!!
+     * @return
+     */
+    public Queue<Vehicle> getQueue() {
+        return queue;
+    }
+
+    /**
      * Show all elements from collection
      */
     public void show() {
@@ -42,10 +50,12 @@ public class MyCollection {
      * @param vehicle
      */
     public void update(int id, Vehicle vehicle) {
+        Queue<Vehicle> prom = queue;
         Queue<Vehicle> updateQueue = new PriorityQueue<>();
-        for (Vehicle vehicle1 : queue) {
-            if (vehicle1.getId() != id) {
-                updateQueue.offer(queue.poll());
+        while(!prom.isEmpty()){
+            Vehicle v = prom.poll();
+            if (v.getId()!=id){
+                updateQueue.offer(v);
             }
         }
         updateQueue.offer(vehicle);
@@ -58,10 +68,12 @@ public class MyCollection {
      * @param idToRemove
      */
     public void removeById(int idToRemove) {
+        Queue<Vehicle> prom = queue;
         Queue<Vehicle> updateQueue = new PriorityQueue<>();
-        for (Vehicle vehicle1 : queue) {
-            if (vehicle1.getId() != idToRemove) {
-                updateQueue.offer(queue.poll());
+        while(!prom.isEmpty()){
+            Vehicle v = prom.poll();
+            if (v.getId()!=idToRemove){
+               updateQueue.offer(v);
             }
         }
         queue = updateQueue;
@@ -71,7 +83,12 @@ public class MyCollection {
      * Removes all element from collections
      */
     public void clear() {
-        queue.clear();
+        if (queue.isEmpty()){
+            System.out.println("Collection is already empty");
+        }else{
+            queue.clear();
+            System.out.println("Collection is empty");
+        }
     }
 
     /**
@@ -110,85 +127,6 @@ public class MyCollection {
             queue.offer(vehicleAddIfMax);
         }
     }
-
-    /**
-     * Read and execute script which is contained in <i>scriptName</i>
-     *
-     * @param scriptName
-     * @param saveName
-     * @throws IOException
-     */
-    public void readScript(String scriptName, String saveName) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(scriptName));
-        String command;
-        while ((command = reader.readLine()) != null) {
-            if (command.equals("help")) {
-                Main.printOut();
-            } else if (command.equals("info")) {
-                this.info();
-            } else if (command.equals("show")) {
-                this.show();
-            } else if (command.equals("add")) {
-                String name = reader.readLine();
-                Float x = Float.parseFloat(reader.readLine());
-                Double y = Double.parseDouble(reader.readLine());
-                Coordinates coordinates = new Coordinates(x, y);
-                float enginePower = Float.parseFloat(reader.readLine());
-                int capacity = Integer.parseInt(reader.readLine());
-                String vehicleType = reader.readLine();
-                String fuelType = reader.readLine();
-                Vehicle vehicle = new Vehicle(name, coordinates, enginePower, capacity, VehicleType.valueOf(vehicleType), FuelType.valueOf(fuelType));
-                add(vehicle);
-            } else if (command.equals("update")) {
-                int id = Integer.parseInt(reader.readLine());
-                String name = reader.readLine();
-                Float x = Float.parseFloat(reader.readLine());
-                Double y = Double.parseDouble(reader.readLine());
-                Coordinates coordinates = new Coordinates(x, y);
-                float enginePower = Float.parseFloat(reader.readLine());
-                int capacity = Integer.parseInt(reader.readLine());
-                String vehicleType = reader.readLine();
-                String fuelType = reader.readLine();
-                Vehicle vehicle = new Vehicle(name, coordinates, enginePower, capacity, VehicleType.valueOf(vehicleType), FuelType.valueOf(fuelType));
-                update(id, vehicle);
-            } else if (command.equals("remove_by_id")) {
-                int id = Integer.parseInt(reader.readLine());
-                removeById(id);
-            } else if (command.equals("clear")) {
-                clear();
-            } else if (command.equals("save")) {
-                save(saveName);
-            } else if (command.equals("execute_script")) {
-                String sName = reader.readLine();
-                readScript(sName, saveName);
-            } else if (command.equals("remove_first")) {
-                removeFirst();
-            } else if (command.equals("remove_head")) {
-                showFirst();
-            } else if (command.equals("add_if_max")) {
-                int id = Integer.parseInt(reader.readLine());
-                String name = reader.readLine();
-                Float x = Float.parseFloat(reader.readLine());
-                Double y = Double.parseDouble(reader.readLine());
-                Coordinates coordinates = new Coordinates(x, y);
-                float enginePower = Float.parseFloat(reader.readLine());
-                int capacity = Integer.parseInt(reader.readLine());
-                String vehicleType = reader.readLine();
-                String fuelType = reader.readLine();
-                Vehicle vehicle = new Vehicle(name, coordinates, enginePower,
-                        capacity, VehicleType.valueOf(vehicleType), FuelType.valueOf(fuelType));
-                addIfMax(vehicle);
-            } else if (command.equals("remove_any_by_fuel_type")) {
-                String fuelType = reader.readLine();
-                removeByFuelType(fuelType);
-            } else if (command.equals("max_by_name")) {
-                getMaxName();
-            } else if (command.equals("group_counting_by_creation_date")) {
-                Map<LocalDate, Integer> LocalDateMap = this.groupByCreationDate();
-            }
-        }
-    }
-
     /**
      * Groups collection by field <i>creationDate</i>
      *
@@ -215,10 +153,11 @@ public class MyCollection {
      * @param fileName
      * @throws FileNotFoundException
      */
-    public void save(String fileName) throws FileNotFoundException {
+    public void save(String fileName) throws IOException {
         FileOutputStream fos = new FileOutputStream(fileName, false);
         Queue<Vehicle> printQueue = queue;
         StringBuilder s = new StringBuilder();
+        s.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>").append("\n").append("<Vehicles>\n");
         while (!printQueue.isEmpty()) {
             Vehicle vehicle = printQueue.poll();
             s.append("  <Vehicle>\n");
@@ -230,12 +169,15 @@ public class MyCollection {
             s.append("      <VehicleType>").append(vehicle.getVehicleType().toString()).append("</VehicleType>\n");
             s.append("      <FuelType>").append(vehicle.getFuelType().toString()).append("</FuelType>\n");
             s.append("  </Vehicle>\n");
-            byte[] buffer = s.toString().getBytes();
-            try {
-                fos.write(buffer, 0, buffer.length);
-            } catch (IOException e) {
-                System.out.println("Something went wrong");
-            }
+        }
+        s.append("</Vehicles>");
+        byte[] buffer = s.toString().getBytes();
+        try {
+            fos.write(buffer, 0, buffer.length);
+        } catch (IOException e) {
+            System.out.println("Something went wrong");
+        }finally {
+            fos.close();
         }
     }
 
@@ -289,53 +231,54 @@ public class MyCollection {
         String vehicleType = null;
         String fuelType = null;
         String line;
-        String regex = "\\w+";
+        String regex1 = "\\w*";
+        String regex2 ="-?\\d+?(\\.d+?)?";
         int count = 0;
         while ((line = reader.readLine()) != null) {
             if (count == 0) {
-                final Pattern pattern = Pattern.compile("<Name>(" + regex + ")</Name>", Pattern.DOTALL);
+                final Pattern pattern = Pattern.compile("<Name>(" + regex1 + ")</Name>", Pattern.DOTALL);
                 final Matcher matcher = pattern.matcher(line);
                 if (matcher.find()) {
                     name = matcher.group(1);
                     count++;
                 }
             } else if (count == 1) {
-                final Pattern pattern = Pattern.compile("<X>(" + regex + ")</X>", Pattern.DOTALL);
+                final Pattern pattern = Pattern.compile("<X>(" + regex2 +")</X>", Pattern.DOTALL);
                 final Matcher matcher = pattern.matcher(line);
                 if (matcher.find()) {
                     x = Float.parseFloat(matcher.group(1));
                     count++;
                 }
             } else if (count == 2) {
-                final Pattern pattern = Pattern.compile("<Y>(" + regex + ")</Y>", Pattern.DOTALL);
+                final Pattern pattern = Pattern.compile("<Y>(" + regex2 + ")</Y>", Pattern.DOTALL);
                 final Matcher matcher = pattern.matcher(line);
                 if (matcher.find()) {
                     y = Double.parseDouble(matcher.group(1));
                     count++;
                 }
             } else if (count == 3) {
-                final Pattern pattern = Pattern.compile("<EnginePower>(" + regex + ")</EnginePower>", Pattern.DOTALL);
+                final Pattern pattern = Pattern.compile("<EnginePower>(" + regex2 + ")</EnginePower>", Pattern.DOTALL);
                 final Matcher matcher = pattern.matcher(line);
                 if (matcher.find()) {
                     enginePower = Float.parseFloat(matcher.group(1));
                     count++;
                 }
             } else if (count == 4) {
-                final Pattern pattern = Pattern.compile("<Capacity>(" + regex + ")</Capacity>", Pattern.DOTALL);
+                final Pattern pattern = Pattern.compile("<Capacity>(" + regex2 + ")</Capacity>", Pattern.DOTALL);
                 final Matcher matcher = pattern.matcher(line);
                 if (matcher.find()) {
                     capacity = Integer.parseInt(matcher.group(1));
                     count++;
                 }
             } else if (count == 5) {
-                final Pattern pattern = Pattern.compile("<VehicleType>(" + regex + ")</VehicleType>", Pattern.DOTALL);
+                final Pattern pattern = Pattern.compile("<VehicleType>(" + regex1 + ")</VehicleType>", Pattern.DOTALL);
                 final Matcher matcher = pattern.matcher(line);
                 if (matcher.find()) {
                     vehicleType = matcher.group(1);
                     count++;
                 }
             } else if (count == 6) {
-                final Pattern pattern = Pattern.compile("<FuelType>(" + regex + ")</FuelType>", Pattern.DOTALL);
+                final Pattern pattern = Pattern.compile("<FuelType>(" + regex1 + ")</FuelType>", Pattern.DOTALL);
                 final Matcher matcher = pattern.matcher(line);
                 if (matcher.find()) {
                     fuelType = matcher.group(1);
@@ -345,7 +288,6 @@ public class MyCollection {
                                 capacity, VehicleType.valueOf(vehicleType), FuelType.valueOf(fuelType));
                         this.add(vehicle);
                     }
-
                 }
             }
         }
