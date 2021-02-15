@@ -1,7 +1,10 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Reader;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.concurrent.ForkJoinPool;
+
 /**
  * @author Gonichenko Nikolay R3136
  * This is main class
@@ -43,14 +46,14 @@ public class Main {
                     break;
                 case "add":
                     System.out.println("Please enter an element");
-                    Vehicle vehicle = getElement();
+                    Vehicle vehicle = MyReader.getElementFromConsole(scanner);
                     collection.add(vehicle);
                     break;
                 case "update":
                     System.out.println("Please enter an id of element ");
                     scanner.nextLine();
                     int id = scanner.nextInt();
-                    Vehicle vehicleUpdate = getElement();
+                    Vehicle vehicleUpdate = MyReader.getElementFromConsole(scanner);
                     collection.update(id,vehicleUpdate);
                     break;
                 case "remove_by_id":
@@ -89,7 +92,7 @@ public class Main {
                     break;
                 case "add_if_max":
                     System.out.println("Please enter an id of element");
-                    Vehicle vehicleAddIfMax = getElement();
+                    Vehicle vehicleAddIfMax = MyReader.getElementFromConsole(scanner);
                     collection.addIfMax(vehicleAddIfMax);
                     break;
                 case "remove_any_by_fuel_type":
@@ -107,6 +110,8 @@ public class Main {
                         System.out.println("Creation date is "+key+" .The amounts is "+LocalDateMap.get(key));
                     }
                     break;
+                default:
+                    System.out.println("There is no this command. Try again");
             }
             System.out.println("Enter a command");
             command = scanner.nextLine();
@@ -134,27 +139,5 @@ public class Main {
         + "remove_any_by_fuel_type - remove elements which have this fuelType \n"
         + "max_by_name - show element with max name \n"
         + "group_counting_by_creation_date - group elements by creationDate and show amounts of each group \n");
-    }
-
-    /**
-     * Method gets new Vehicle from User
-     * @return Vehicle
-     */
-    public static Vehicle getElement(){
-        System.out.println("Enter the name:");
-        String name = scanner.nextLine();
-        System.out.println("Enter coordinates:");
-        Float x = scanner.nextFloat();
-        Double y = scanner.nextDouble();
-        Coordinates coordinates = new Coordinates(x,y);
-        System.out.println("Enter Engine power and capacity:");
-        float enginePower = scanner.nextFloat();
-        int capacity = scanner.nextInt();
-        System.out.println("Choose type of vehicle: "+ VehicleType.showAllValues());
-        String vehicleType = scanner.nextLine();
-        System.out.println("Choose type of fuel: "+ FuelType.showAllValues());
-        String fuelType = scanner.nextLine();
-        Vehicle vehicle = new Vehicle(name, coordinates, enginePower, capacity, VehicleType.valueOf(vehicleType), FuelType.valueOf(fuelType));
-        return vehicle;
     }
 }

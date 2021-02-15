@@ -218,8 +218,6 @@ public class MyCollection {
     public void save(String fileName) throws FileNotFoundException {
         FileOutputStream fos = new FileOutputStream(fileName, false);
         Queue<Vehicle> printQueue = queue;
-        String start = "<Vehicles> \n";
-        String finish = "</Vehicles>";
         StringBuilder s = new StringBuilder();
         while (!printQueue.isEmpty()) {
             Vehicle vehicle = printQueue.poll();
