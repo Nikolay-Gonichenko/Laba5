@@ -20,17 +20,27 @@ public class Main {
     public static void main(String[] args) {
         printOut();
         MyCollection collection = new MyCollection();
-        System.out.println("Enter a file's name for starting");
-        String fileName;
-        while(true){
-            fileName = scanner.nextLine();
-            try {
-                collection.fillFromFile(fileName);
-                break;
-            } catch (IOException e) {
-                System.out.println("Something went wrong with reading xml file. Enter again");
+        String fileName = args[0];
+        boolean checkFileIsRead = false;
+        try {
+            collection.fillFromFile(fileName);
+            checkFileIsRead = true;
+        } catch (IOException e) {
+            System.out.println("Something went wrong with reading xml file from command line arguments. Enter it from console");
+        }
+        if (!checkFileIsRead){
+            while(true){
+                System.out.println("Enter a file's name for starting");
+                fileName = scanner.nextLine();
+                try {
+                    collection.fillFromFile(fileName);
+                    break;
+                } catch (IOException e) {
+                    System.out.println("Something went wrong with reading file");
+                }
             }
         }
+
         System.out.println("Enter a command");
         String command = scanner.nextLine();
         while(!command.equals("exit")){

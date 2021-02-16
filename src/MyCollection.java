@@ -51,7 +51,7 @@ public class MyCollection {
      * @param vehicle
      */
     public void update(int id, Vehicle vehicle) {
-        Queue<Vehicle> prom = queue;
+        Queue<Vehicle> prom = new PriorityQueue<>(queue);
         Queue<Vehicle> updateQueue = new PriorityQueue<>();
         while(!prom.isEmpty()){
             Vehicle v = prom.poll();
@@ -156,7 +156,7 @@ public class MyCollection {
      */
     public void save(String fileName) throws IOException {
         FileOutputStream fos = new FileOutputStream(fileName, false);
-        Queue<Vehicle> printQueue = queue;
+        Queue<Vehicle> printQueue = new PriorityQueue<>(queue);
         StringBuilder s = new StringBuilder();
         s.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>").append("\n").append("<Vehicles>\n");
         while (!printQueue.isEmpty()) {
@@ -189,7 +189,7 @@ public class MyCollection {
      */
     public void removeByFuelType(String fuelType) {
         FuelType fuelType1 = FuelType.valueOf(fuelType);
-        Queue<Vehicle> printQueue = queue;
+        Queue<Vehicle> printQueue = new PriorityQueue<>(queue);
         for (Vehicle vehicle : queue) {
             if (vehicle.getFuelType().equals(fuelType1)) {
                 printQueue.offer(vehicle);
