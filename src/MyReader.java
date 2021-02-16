@@ -1,7 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -257,7 +257,7 @@ public class MyReader {
             } else if (command.equals("max_by_name")) {
                 collection.getMaxName();
             } else if (command.equals("group_counting_by_creation_date")) {
-                Map<LocalDate, Integer> LocalDateMap = collection.groupByCreationDate();
+                Map<LocalDateTime, Integer> LocalDateMap = collection.groupByCreationDate();
             }
         }
     }

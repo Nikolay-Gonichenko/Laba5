@@ -1,14 +1,16 @@
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
  * Class of elements which is contained in collection
  */
 public class Vehicle implements Comparable<Vehicle> {
+    private static int ID_START = 1;
     private int id;
     private String name;
     private Coordinates coordinates;
-    private LocalDate creationDate;
+    private LocalDateTime creationDate;
     private float enginePower;
     private int capacity;
     private VehicleType vehicleType;
@@ -46,8 +48,8 @@ public class Vehicle implements Comparable<Vehicle> {
     }
 
     public Vehicle(String name, Coordinates coordinates, float enginePower, int capacity, VehicleType type, FuelType fuelType) {
-        id  = (int) (Math.random()*100);
-        creationDate = LocalDate.now();
+        id  = ID_START++;
+        creationDate = LocalDateTime.now();
         this.name = name;
         this.coordinates = coordinates;
         this.enginePower = enginePower;
@@ -57,7 +59,7 @@ public class Vehicle implements Comparable<Vehicle> {
     }
     public Vehicle(int id, String name, Coordinates coordinates, float enginePower, int capacity, VehicleType vehicleType, FuelType fuelType) {
         this.id = id;
-        creationDate = LocalDate.now();
+        creationDate = LocalDateTime.now();
         this.name = name;
         this.coordinates = coordinates;
         this.enginePower = enginePower;
@@ -82,7 +84,7 @@ public class Vehicle implements Comparable<Vehicle> {
         return coordinates;
     }
 
-    public LocalDate getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 

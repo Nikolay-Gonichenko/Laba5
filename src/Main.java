@@ -2,6 +2,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ForkJoinPool;
 
@@ -41,7 +42,11 @@ public class Main {
                     collection.info();
                     break;
                 case "show":
-                    collection.show();
+                    if (!collection.checkToEmpty()){
+                        collection.show();
+                    }else{
+                        System.out.println("Collection is empty");
+                    }
                     break;
                 case "add":
                     System.out.println("Please enter an element");
@@ -80,34 +85,38 @@ public class Main {
                     collection.update(id,vehicleUpdate);
                     break;
                 case "remove_by_id":
-                    System.out.println("Please enter an id of element ");
-                    String idToRemove_check;
-                    int idToRemove;
-                    while(true){
-                        idToRemove_check = scanner.nextLine();
-                        try{
-                            idToRemove = Integer.parseInt(idToRemove_check);
-                            if (idToRemove>0){
-                                boolean check_in_queue = false;
-                                for (Vehicle v:collection.getQueue()){
-                                    if (v.getId()==idToRemove){
-                                        check_in_queue = true;
-                                        break;
+                    if (!collection.checkToEmpty()){
+                        System.out.println("Please enter an id of element ");
+                        String idToRemove_check;
+                        int idToRemove;
+                        while(true){
+                            idToRemove_check = scanner.nextLine();
+                            try{
+                                idToRemove = Integer.parseInt(idToRemove_check);
+                                if (idToRemove>0){
+                                    boolean check_in_queue = false;
+                                    for (Vehicle v:collection.getQueue()){
+                                        if (v.getId()==idToRemove){
+                                            check_in_queue = true;
+                                            break;
+                                        }
                                     }
+                                    if (check_in_queue){
+                                        break;
+                                    }else throw new IllegalArgumentException();
+                                }else{
+                                    throw new NumberFormatException();
                                 }
-                                if (check_in_queue){
-                                    break;
-                                }else throw new IllegalArgumentException();
-                            }else{
-                                throw new NumberFormatException();
+                            }catch (NumberFormatException e){
+                                System.out.println("Id has to be int and > 0. Try again");
+                            }catch (IllegalArgumentException e){
+                                System.out.println("You entered id of element which doesn't exist.Try again");
                             }
-                        }catch (NumberFormatException e){
-                            System.out.println("Id has to be int and > 0. Try again");
-                        }catch (IllegalArgumentException e){
-                            System.out.println("You entered id of element which doesn't exist.Try again");
                         }
+                        collection.removeById(idToRemove);
+                    }else{
+                        System.out.println("Collection is empty");
                     }
-                    collection.removeById(idToRemove);
                     break;
                 case "clear":
                     collection.clear();
@@ -136,10 +145,18 @@ public class Main {
                     }
                     break;
                 case "remove_first":
-                    collection.removeFirst();
+                    if (!collection.checkToEmpty()){
+                        collection.removeFirst();
+                    }else{
+                        System.out.println("Collection is empty. Add element firstly");
+                    }
                     break;
                 case "remove_head":
-                    System.out.println(collection.showFirst());
+                    if (!collection.checkToEmpty()){
+                        System.out.println(collection.showFirst());
+                    }else{
+                        System.out.println("Collection is empty");
+                    }
                     break;
                 case "add_if_max":
                     System.out.println("Please enter an id of element");
@@ -160,26 +177,38 @@ public class Main {
                     collection.addIfMax(vehicleAddIfMax);
                     break;
                 case "remove_any_by_fuel_type":
-                    String fuelType;
-                    while(true){
-                        try{
-                            System.out.println("Enter a FuelType");
-                            fuelType = scanner.nextLine();
-                            break;
-                        }catch (IllegalArgumentException e){
-                            System.out.println("This FuelType doesn't exist. Try again");
+                    if (!collection.checkToEmpty()){
+                        String fuelType;
+                        while(true){
+                            try{
+                                System.out.println("Enter a FuelType");
+                                fuelType = scanner.nextLine();
+                                break;
+                            }catch (IllegalArgumentException e){
+                                System.out.println("This FuelType doesn't exist. Try again");
+                            }
                         }
+                        collection.removeByFuelType(fuelType);
+                    }else{
+                        System.out.println("Collection is empty. Add element firstly.");
                     }
-                    collection.removeByFuelType(fuelType);
                     break;
                 case "max_by_name":
-                    System.out.println("MaxName Element is "+collection.getMaxName());
+                    if (!collection.checkToEmpty()){
+                        System.out.println(collection.getMaxName());
+                    }else{
+                        System.out.println("Collection is empty");
+                    }
                     break;
                 case "group_counting_by_creation_date":
-                    Map<LocalDate,Integer> LocalDateMap = collection.groupByCreationDate();
-                    Set<LocalDate> keys = LocalDateMap.keySet();
-                    for (LocalDate key:keys){
-                        System.out.println("Creation date is "+key+" .The amounts is "+LocalDateMap.get(key));
+                    if (!collection.checkToEmpty()){
+                        Map<LocalDateTime,Integer> LocalDateMap = collection.groupByCreationDate();
+                        Set<LocalDateTime> keys = LocalDateMap.keySet();
+                        for (LocalDateTime key:keys){
+                            System.out.println("Creation date is "+key+" .The amounts is "+LocalDateMap.get(key));
+                        }
+                    }else{
+                        System.out.println("Collection is empty.Add elements firstly");
                     }
                     break;
                 default:

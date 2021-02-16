@@ -1,5 +1,6 @@
 import java.io.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -132,11 +133,11 @@ public class MyCollection {
      *
      * @return Map which contains amount of elements in each group
      */
-    public Map<LocalDate, Integer> groupByCreationDate() {
-        Map<LocalDate, Integer> map = new TreeMap<>();
+    public Map<LocalDateTime, Integer> groupByCreationDate() {
+        Map<LocalDateTime, Integer> map = new TreeMap<>();
         Queue<Vehicle> printQueue = queue;
         for (Vehicle vehicle : printQueue) {
-            LocalDate date = vehicle.getCreationDate();
+            LocalDateTime date = vehicle.getCreationDate();
             Integer count = map.get(date);
             if (count == null) {
                 map.put(date, 1);
@@ -204,17 +205,20 @@ public class MyCollection {
      * @return maxName element
      */
     public String getMaxName() {
-        Queue<Vehicle> printQueue = queue;
-        String s = printQueue.poll().getName();
-        for (Vehicle v : printQueue) {
-            String prom = v.getName();
-            if (s.compareTo(prom) < 0) {
-                s = prom;
+        if (!queue.isEmpty()){
+            Queue<Vehicle> printQueue = queue;
+            String s = printQueue.poll().getName();
+            for (Vehicle v : printQueue) {
+                String prom = v.getName();
+                if (s.compareTo(prom) < 0) {
+                    s = prom;
+                }
             }
+            return "Max element is"+s;
+        }else{
+            return  "Collection is empty. Add element firstly";
         }
-        return s;
     }
-
     /**
      * Fill collection from XML file <i>fileName</i>
      *
@@ -291,5 +295,13 @@ public class MyCollection {
                 }
             }
         }
+    }
+
+    /**
+     * Check collection by emptiness
+     * @return
+     */
+    public boolean checkToEmpty() {
+        return queue.isEmpty();
     }
 }
