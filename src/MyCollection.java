@@ -225,7 +225,7 @@ public class MyCollection {
      * @param fileName
      * @throws IOException
      */
-    public void fillFromFile(String fileName) throws IOException {
+    public void fillFromFile(String fileName) throws FileNotFoundException,IOException {
         BufferedReader reader = new BufferedReader(new FileReader(new File(fileName)));
         String name = null;
         float x = 0;

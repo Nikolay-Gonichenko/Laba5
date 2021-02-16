@@ -25,8 +25,10 @@ public class Main {
         try {
             collection.fillFromFile(fileName);
             checkFileIsRead = true;
-        } catch (IOException e) {
-            System.out.println("Something went wrong with reading xml file from command line arguments. Enter it from console");
+        } catch (FileNotFoundException e) {
+            System.out.println("This file doesn't exist. Enter file from console");
+        }catch (IOException e){
+            System.out.println("Something went wrong with reading data from file. Enter file from console");
         }
         if (!checkFileIsRead){
             while(true){
