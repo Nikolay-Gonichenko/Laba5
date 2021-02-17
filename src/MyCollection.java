@@ -237,7 +237,7 @@ public class MyCollection {
         String fuelType = null;
         String line;
         String regex1 = "\\w*";
-        String regex2 ="-?\\d+?(\\.d+?)?";
+        String regex2 ="-?\\d+?(\\.\\d+?)?";
         int count = 0;
         while ((line = reader.readLine()) != null) {
             if (count == 0) {

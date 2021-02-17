@@ -2,7 +2,7 @@
 <Vehicles>
   <Vehicle>
       <Name>Helicopter</Name>
-      <X>100.0</X>
+      <X>100.5</X>
       <Y>100.0</Y>
       <EnginePower>200.0</EnginePower>
       <Capacity>359</Capacity>
@@ -17,5 +17,14 @@
       <Capacity>22</Capacity>
       <VehicleType>CHOPPER</VehicleType>
       <FuelType>KEROSENE</FuelType>
+  </Vehicle>
+  <Vehicle>
+      <Name>name</Name>
+      <X>10.0</X>
+      <Y>20.0</Y>
+      <EnginePower>80.0</EnginePower>
+      <Capacity>80</Capacity>
+      <VehicleType>CHOPPER</VehicleType>
+      <FuelType>PLASMA</FuelType>
   </Vehicle>
 </Vehicles>
