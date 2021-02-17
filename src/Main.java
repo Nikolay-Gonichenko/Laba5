@@ -21,29 +21,28 @@ public class Main {
     public static void main(String[] args) {
         printOut();
         MyCollection collection = new MyCollection();
-        String fileName = args[0];
-        boolean checkFileIsRead = false;
-        try {
-            collection.fillFromFile(fileName);
-            checkFileIsRead = true;
-        } catch (FileNotFoundException e) {
-            System.out.println("This file doesn't exist. Enter file from console");
-        } catch (IOException e) {
-            System.out.println("Something went wrong with reading data from file. Enter file from console");
-        }
-        if (!checkFileIsRead) {
-            while (true) {
-                System.out.println("Enter a file's name for starting");
-                fileName = scanner.nextLine();
-                try {
-                    collection.fillFromFile(fileName);
-                    break;
-                } catch (IOException e) {
-                    System.out.println("Something went wrong with reading file");
-                }
+        String fileName;
+        while (true) {
+            try {
+                fileName = args[0];
+                collection.fillFromFile(fileName);
+                break;
+            } catch (FileNotFoundException e) {
+                System.out.println("This file doesn't exist. Enter file from console");
+            } catch (IOException e) {
+                System.out.println("Something went wrong with reading data from file. Enter file from console");
+            }catch (IndexOutOfBoundsException e){
+                System.out.println("You didn't enter a input file");
+            }
+            System.out.println("Enter a file's name for starting");
+            fileName = scanner.nextLine();
+            try {
+                collection.fillFromFile(fileName);
+                break;
+            } catch (IOException e) {
+                System.out.println("Something went wrong with reading file");
             }
         }
-
         System.out.println("Enter a command");
         String command = scanner.nextLine();
         String[] commands = command.split(" ");
@@ -68,12 +67,17 @@ public class Main {
                     collection.add(vehicle);
                     break;
                 case "update":
-                    System.out.println("Please enter an id of element ");
                     String id_check;
+                    int countCheckToUpdate = 1;
                     int id;
                     while (true) {
-                        id_check = scanner.nextLine();
                         try {
+                            if (countCheckToUpdate==1){
+                                id_check = commands[1];
+                            }else{
+                                System.out.println("Enter an id");
+                                id_check = scanner.nextLine();
+                            }
                             id = Integer.parseInt(id_check);
                             if (id > 0) {
                                 boolean check_in_queue = false;
@@ -90,9 +94,14 @@ public class Main {
                                 throw new NumberFormatException();
                             }
                         } catch (NumberFormatException e) {
+                            countCheckToUpdate++;
                             System.out.println("Id has to be int and > 0. Try again");
                         } catch (IllegalArgumentException e) {
+                            countCheckToUpdate++;
                             System.out.println("You entered id of element which doesn't exist.Try again");
+                        }catch (IndexOutOfBoundsException e){
+                            countCheckToUpdate++;
+                            System.out.println("You forgot to enter an id. Do it");
                         }
                     }
                     Vehicle vehicleUpdate = MyReader.getElementFromConsoleToUpdate(scanner, id);
@@ -149,8 +158,8 @@ public class Main {
                     break;
                 case "save":
                     try {
-                        collection.save("Output.xml");
-                        System.out.println("Data is saved to Output.xml");
+                        collection.save(fileName);
+                        System.out.println("Data is saved to Input.xml");
                     } catch (IOException e) {
                         System.out.println("File doesn't exist. Enter a command");
                     }
