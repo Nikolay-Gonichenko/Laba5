@@ -42,7 +42,8 @@ public class Main {
         System.out.println("Enter a command");
         String command = scanner.nextLine();
         String[] commands = command.split(" ");
-        while (!commands[0].equals("exit")) {
+        boolean check = true;
+        while (check) {
             switch (commands[0]) {
                 case "help":
                     printOut();
@@ -171,7 +172,7 @@ public class Main {
                                 System.out.println("Enter a scriptName");
                                 scriptName = scanner.nextLine();
                             }
-                            MyReader.readScript(scriptName, fileName, collection);
+                            check = MyReader.readScript(scriptName, fileName, collection);
                             break;
                         } catch (FileCycleException e){
                             System.out.println("Cycling in the script");
@@ -267,12 +268,17 @@ public class Main {
                         System.out.println("Collection is empty.Add elements firstly");
                     }
                     break;
+                case "exit":
+                    check = false;
+                    break;
                 default:
                     System.out.println("There is no this command. Try again");
             }
-            System.out.println("Enter a command");
-            command = scanner.nextLine();
-            commands = command.split(" ");
+            if (check){
+                System.out.println("Enter a command");
+                command = scanner.nextLine();
+                commands = command.split(" ");
+            }
         }
     }
 

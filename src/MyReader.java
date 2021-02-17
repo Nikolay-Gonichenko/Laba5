@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 /**
  * Class for reading
@@ -151,10 +152,11 @@ public class MyReader {
      * @throws IOException
      * @throws IllegalArgumentException
      */
-    public static void readScript(String scriptFile, String saveFile, MyCollection collection) throws IOException,
+    public static boolean readScript(String scriptFile, String saveFile, MyCollection collection) throws IOException,
             IllegalArgumentException,IndexOutOfBoundsException, FileCycleException{
         BufferedReader reader = new BufferedReader(new FileReader(scriptFile));
         String command;
+        boolean check = true;
         while ((command = reader.readLine()) != null) {
             String[] commands = command.split(" ");
             if (commands[0].equals("help")) {
@@ -174,7 +176,7 @@ public class MyReader {
                 String fuelType = reader.readLine();
                 Vehicle vehicle = new Vehicle(name, coordinates, enginePower, capacity, VehicleType.valueOf(vehicleType), FuelType.valueOf(fuelType));
                 collection.add(vehicle);
-            } else if (command.equals("update")) {
+            } else if (commands[0].equals("update")) {
                 int id = Integer.parseInt(commands[1]);
                 String name = reader.readLine();
                 Float x = Float.parseFloat(reader.readLine());
@@ -186,22 +188,22 @@ public class MyReader {
                 String fuelType = reader.readLine();
                 Vehicle vehicle = new Vehicle(name, coordinates, enginePower, capacity, VehicleType.valueOf(vehicleType), FuelType.valueOf(fuelType));
                 collection.update(id, vehicle);
-            } else if (command.equals("remove_by_id")) {
+            } else if (commands[0].equals("remove_by_id")) {
                 int id = Integer.parseInt(commands[1]);
                 collection.removeById(id);
-            } else if (command.equals("clear")) {
+            } else if (commands[0].equals("clear")) {
                 collection.clear();
-            } else if (command.equals("save")) {
+            } else if (commands[0].equals("save")) {
                 collection.save(saveFile);
-            } else if (command.equals("execute_script")) {
+            } else if (commands[0].equals("execute_script")) {
                 String sName = commands[1];
                 if (scriptFile.equals(sName)) throw new FileCycleException();
                 readScript(sName, saveFile, collection);
-            } else if (command.equals("remove_first")) {
+            } else if (commands[0].equals("remove_first")) {
                 collection.removeFirst();
-            } else if (command.equals("remove_head")) {
+            } else if (commands[0].equals("remove_head")) {
                 collection.showFirst();
-            } else if (command.equals("add_if_max")) {
+            } else if (commands[0].equals("add_if_max")) {
                 String name = reader.readLine();
                 Float x = Float.parseFloat(reader.readLine());
                 Double y = Double.parseDouble(reader.readLine());
@@ -213,14 +215,21 @@ public class MyReader {
                 Vehicle vehicle = new Vehicle(name, coordinates, enginePower,
                         capacity, VehicleType.valueOf(vehicleType), FuelType.valueOf(fuelType));
                 collection.addIfMax(vehicle);
-            } else if (command.equals("remove_any_by_fuel_type")) {
+            } else if (commands[0].equals("remove_any_by_fuel_type")) {
                 String fuelType = commands[1];
                 collection.removeByFuelType(fuelType);
-            } else if (command.equals("max_by_name")) {
+            } else if (commands[0].equals("max_by_name")) {
                 collection.getMaxName();
-            } else if (command.equals("group_counting_by_creation_date")) {
+            } else if (commands[0].equals("group_counting_by_creation_date")) {
                 Map<LocalDateTime, Integer> LocalDateMap = collection.groupByCreationDate();
+                Set<LocalDateTime> keys = LocalDateMap.keySet();
+                for (LocalDateTime key : keys) {
+                    System.out.println("Creation date is " + key + " .The amounts is " + LocalDateMap.get(key));
+                }
+            }else if (commands[0].equals("exit")){
+                check = false;
             }
         }
+        return check;
     }
 }
