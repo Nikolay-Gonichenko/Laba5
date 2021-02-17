@@ -15,6 +15,7 @@ public class Main {
 
     /**
      * This is start point of program
+     *
      * @param args
      */
     public static void main(String[] args) {
@@ -27,11 +28,11 @@ public class Main {
             checkFileIsRead = true;
         } catch (FileNotFoundException e) {
             System.out.println("This file doesn't exist. Enter file from console");
-        }catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Something went wrong with reading data from file. Enter file from console");
         }
-        if (!checkFileIsRead){
-            while(true){
+        if (!checkFileIsRead) {
+            while (true) {
                 System.out.println("Enter a file's name for starting");
                 fileName = scanner.nextLine();
                 try {
@@ -45,8 +46,9 @@ public class Main {
 
         System.out.println("Enter a command");
         String command = scanner.nextLine();
-        while(!command.equals("exit")){
-            switch (command){
+        String[] commands = command.split(" ");
+        while (!commands[0].equals("exit")) {
+            switch (commands[0]) {
                 case "help":
                     printOut();
                     break;
@@ -54,9 +56,9 @@ public class Main {
                     collection.info();
                     break;
                 case "show":
-                    if (!collection.checkToEmpty()){
+                    if (!collection.checkToEmpty()) {
                         collection.show();
-                    }else{
+                    } else {
                         System.out.println("Collection is empty");
                     }
                     break;
@@ -69,64 +71,76 @@ public class Main {
                     System.out.println("Please enter an id of element ");
                     String id_check;
                     int id;
-                    while(true){
+                    while (true) {
                         id_check = scanner.nextLine();
-                        try{
+                        try {
                             id = Integer.parseInt(id_check);
-                            if (id>0){
+                            if (id > 0) {
                                 boolean check_in_queue = false;
-                                for (Vehicle v:collection.getQueue()){
-                                    if (v.getId()==id){
+                                for (Vehicle v : collection.getQueue()) {
+                                    if (v.getId() == id) {
                                         check_in_queue = true;
                                         break;
                                     }
                                 }
-                                if (check_in_queue){
+                                if (check_in_queue) {
                                     break;
-                                }else throw new IllegalArgumentException();
-                            }else{
+                                } else throw new IllegalArgumentException();
+                            } else {
                                 throw new NumberFormatException();
                             }
-                        }catch (NumberFormatException e){
+                        } catch (NumberFormatException e) {
                             System.out.println("Id has to be int and > 0. Try again");
-                        }catch (IllegalArgumentException e){
+                        } catch (IllegalArgumentException e) {
                             System.out.println("You entered id of element which doesn't exist.Try again");
                         }
                     }
-                    Vehicle vehicleUpdate = MyReader.getElementFromConsoleToUpdate(scanner,id);
-                    collection.update(id,vehicleUpdate);
+                    Vehicle vehicleUpdate = MyReader.getElementFromConsoleToUpdate(scanner, id);
+                    collection.update(id, vehicleUpdate);
                     break;
                 case "remove_by_id":
-                    if (!collection.checkToEmpty()){
-                        System.out.println("Please enter an id of element ");
+                    if (!collection.checkToEmpty()) {
                         String idToRemove_check;
+                        int count_check = 1;
                         int idToRemove;
-                        while(true){
-                            idToRemove_check = scanner.nextLine();
-                            try{
+                        while (true) {
+                            try {
+                                if (count_check == 1) {
+                                    idToRemove_check = commands[1];
+                                } else {
+                                    System.out.println("Please enter an id of element ");
+                                    idToRemove_check = scanner.nextLine();
+                                }
                                 idToRemove = Integer.parseInt(idToRemove_check);
-                                if (idToRemove>0){
+                                if (idToRemove > 0) {
                                     boolean check_in_queue = false;
-                                    for (Vehicle v:collection.getQueue()){
-                                        if (v.getId()==idToRemove){
+                                    for (Vehicle v : collection.getQueue()) {
+                                        if (v.getId() == idToRemove) {
                                             check_in_queue = true;
                                             break;
                                         }
                                     }
-                                    if (check_in_queue){
+                                    if (check_in_queue) {
                                         break;
-                                    }else throw new IllegalArgumentException();
-                                }else{
+                                    } else {
+                                        count_check++;
+                                        throw new IllegalArgumentException();
+                                    }
+                                } else {
+                                    count_check++;
                                     throw new NumberFormatException();
                                 }
-                            }catch (NumberFormatException e){
+                            } catch (NumberFormatException e) {
                                 System.out.println("Id has to be int and > 0. Try again");
-                            }catch (IllegalArgumentException e){
+                            } catch (IllegalArgumentException e) {
                                 System.out.println("You entered id of element which doesn't exist.Try again");
+                            } catch (IndexOutOfBoundsException e) {
+                                count_check++;
+                                System.out.println("You didn't enter an id. Do it");
                             }
                         }
                         collection.removeById(idToRemove);
-                    }else{
+                    } else {
                         System.out.println("Collection is empty");
                     }
                     break;
@@ -142,31 +156,41 @@ public class Main {
                     }
                     break;
                 case "execute_script":
-                    System.out.println("Enter a scriptName");
                     String scriptName;
-                    while(true){
+                    int count_check1 = 1;
+                    while (true) {
                         try {
-                            scriptName = scanner.nextLine();
-                            MyReader.readScript(scriptName,fileName,collection);
+                            if (count_check1 == 1) {
+                                scriptName = commands[1];
+                            } else {
+                                System.out.println("Enter a scriptName");
+                                scriptName = scanner.nextLine();
+                            }
+                            MyReader.readScript(scriptName, fileName, collection);
                             break;
                         } catch (FileNotFoundException e) {
                             System.out.println("File doesn't exist. Enter command and scriptName again");
-                        } catch (IOException|IllegalArgumentException e) {
+                            count_check1++;
+                        } catch (IOException | IllegalArgumentException e) {
+                            count_check1++;
                             System.out.println("Command in file incorrect. Executing of file has stopped.");
+                        } catch (IndexOutOfBoundsException e) {
+                            count_check1++;
+                            System.out.println("You didn't enter a scriptName. Do it");
                         }
                     }
                     break;
                 case "remove_first":
-                    if (!collection.checkToEmpty()){
+                    if (!collection.checkToEmpty()) {
                         collection.removeFirst();
-                    }else{
+                    } else {
                         System.out.println("Collection is empty. Add element firstly");
                     }
                     break;
                 case "remove_head":
-                    if (!collection.checkToEmpty()){
+                    if (!collection.checkToEmpty()) {
                         System.out.println(collection.showFirst());
-                    }else{
+                    } else {
                         System.out.println("Collection is empty");
                     }
                     break;
@@ -174,52 +198,61 @@ public class Main {
                     System.out.println("Please enter an id of element");
                     String idCheck;
                     int idAddIfMax;
-                    while(true){
+                    while (true) {
                         idCheck = scanner.nextLine();
-                        try{
+                        try {
                             idAddIfMax = Integer.parseInt(idCheck);
-                            if (idAddIfMax>0){
+                            if (idAddIfMax > 0) {
                                 break;
                             }
-                        }catch (NumberFormatException e){
+                        } catch (NumberFormatException e) {
                             System.out.println("Id has to be int and > 0");
                         }
                     }
-                    Vehicle vehicleAddIfMax = MyReader.getElementFromConsoleToUpdate(scanner,idAddIfMax);
+                    Vehicle vehicleAddIfMax = MyReader.getElementFromConsoleToUpdate(scanner, idAddIfMax);
                     collection.addIfMax(vehicleAddIfMax);
                     break;
                 case "remove_any_by_fuel_type":
-                    if (!collection.checkToEmpty()){
+                    if (!collection.checkToEmpty()) {
                         String fuelType;
-                        while(true){
-                            try{
-                                System.out.println("Enter a FuelType");
-                                fuelType = scanner.nextLine();
+                        int count_check2 = 1;
+                        while (true) {
+                            try {
+                                if (count_check2 == 1) {
+                                    fuelType = commands[1];
+                                } else {
+                                    System.out.println("Enter a FuelType");
+                                    fuelType = scanner.nextLine();
+                                }
+                                collection.removeByFuelType(fuelType);
                                 break;
-                            }catch (IllegalArgumentException e){
+                            } catch (IllegalArgumentException e) {
+                                count_check2++;
                                 System.out.println("This FuelType doesn't exist. Try again");
+                            } catch (IndexOutOfBoundsException e) {
+                                count_check2++;
+                                System.out.println("You didn't enter a fuelType. Do it");
                             }
                         }
-                        collection.removeByFuelType(fuelType);
-                    }else{
+                    } else {
                         System.out.println("Collection is empty. Add element firstly.");
                     }
                     break;
                 case "max_by_name":
-                    if (!collection.checkToEmpty()){
+                    if (!collection.checkToEmpty()) {
                         System.out.println(collection.getMaxName());
-                    }else{
+                    } else {
                         System.out.println("Collection is empty");
                     }
                     break;
                 case "group_counting_by_creation_date":
-                    if (!collection.checkToEmpty()){
-                        Map<LocalDateTime,Integer> LocalDateMap = collection.groupByCreationDate();
+                    if (!collection.checkToEmpty()) {
+                        Map<LocalDateTime, Integer> LocalDateMap = collection.groupByCreationDate();
                         Set<LocalDateTime> keys = LocalDateMap.keySet();
-                        for (LocalDateTime key:keys){
-                            System.out.println("Creation date is "+key+" .The amounts is "+LocalDateMap.get(key));
+                        for (LocalDateTime key : keys) {
+                            System.out.println("Creation date is " + key + " .The amounts is " + LocalDateMap.get(key));
                         }
-                    }else{
+                    } else {
                         System.out.println("Collection is empty.Add elements firstly");
                     }
                     break;
@@ -228,29 +261,30 @@ public class Main {
             }
             System.out.println("Enter a command");
             command = scanner.nextLine();
+            commands = command.split(" ");
         }
     }
 
     /**
      * Method prints the legend
      */
-    public static void printOut(){
+    public static void printOut() {
         System.out.println("All commands: \n"
-        + "help - show list of commands \n"
-        + "info - show information about collection \n"
-        + "show - show all elements of collection \n"
-        + "add - add new element \n"
-        + "update - update element with id \n"
-        + "remove_by_id - remove element from collection \n"
-        + "clear - clear the collection \n"
-        + "save - save collection to file \n"
-        + "execute_script - read and execute commands from file_name \n"
-        + "exit - end the program \n"
-        + "remove_first - remove first element \n"
-        + "remove_head - remove fist element and delete him \n"
-        + "add_if_max - add element if it's bigger than max element in collection \n"
-        + "remove_any_by_fuel_type - remove elements which have this fuelType \n"
-        + "max_by_name - show element with max name \n"
-        + "group_counting_by_creation_date - group elements by creationDate and show amounts of each group \n");
+                + "help - show list of commands \n"
+                + "info - show information about collection \n"
+                + "show - show all elements of collection \n"
+                + "add - add new element \n"
+                + "update id - update element with id;you need to have the id in the same line as command\n"
+                + "remove_by_id id - remove element from collection; you have to write the id in the same line as command\n"
+                + "clear - clear the collection \n"
+                + "save - save collection to file \n"
+                + "execute_script scriptName - read and execute commands from file_name; you have to write the scriptName in the same line as command \n"
+                + "exit - end the program \n"
+                + "remove_first - remove first element \n"
+                + "remove_head - remove fist element and delete him \n"
+                + "add_if_max - add element if it's bigger than max element in collection \n"
+                + "remove_any_by_fuel_type fuelType - remove elements which have this fuelType; you have to write the fuelType in the same line as command \n"
+                + "max_by_name - show element with max name \n"
+                + "group_counting_by_creation_date - group elements by creationDate and show amounts of each group \n");
     }
 }

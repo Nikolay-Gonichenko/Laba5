@@ -115,6 +115,7 @@ public class MyCollection {
      */
     private Vehicle getMax() {
         Queue<Vehicle> queueVehicle = new PriorityQueue<>(queue.size(), Collections.reverseOrder());
+        queueVehicle.addAll(queue);
         return queueVehicle.poll();
     }
 
@@ -187,7 +188,7 @@ public class MyCollection {
      *
      * @param fuelType
      */
-    public void removeByFuelType(String fuelType) {
+    public void removeByFuelType(String fuelType) throws IllegalArgumentException {
         FuelType fuelType1 = FuelType.valueOf(fuelType);
         Queue<Vehicle> printQueue = new PriorityQueue<>(queue);
         for (Vehicle vehicle : queue) {
