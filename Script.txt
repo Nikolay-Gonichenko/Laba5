@@ -1,2 +1,8 @@
-show
-info
+add
+name
+10
+10
+10
+100
+CHOPPER
+PLASMA

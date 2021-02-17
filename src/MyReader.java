@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -150,17 +151,19 @@ public class MyReader {
      * @throws IOException
      * @throws IllegalArgumentException
      */
-    public static void readScript(String scriptFile, String saveFile, MyCollection collection) throws IOException, IllegalArgumentException {
+    public static void readScript(String scriptFile, String saveFile, MyCollection collection) throws IOException,
+            IllegalArgumentException,IndexOutOfBoundsException, FileCycleException{
         BufferedReader reader = new BufferedReader(new FileReader(scriptFile));
         String command;
         while ((command = reader.readLine()) != null) {
-            if (command.equals("help")) {
+            String[] commands = command.split(" ");
+            if (commands[0].equals("help")) {
                 Main.printOut();
-            } else if (command.equals("info")) {
+            } else if (commands[0].equals("info")) {
                 collection.info();
-            } else if (command.equals("show")) {
+            } else if (commands[0].equals("show")) {
                 collection.show();
-            } else if (command.equals("add")) {
+            } else if (commands[0].equals("add")) {
                 String name = reader.readLine();
                 Float x = Float.parseFloat(reader.readLine());
                 Double y = Double.parseDouble(reader.readLine());
@@ -172,7 +175,7 @@ public class MyReader {
                 Vehicle vehicle = new Vehicle(name, coordinates, enginePower, capacity, VehicleType.valueOf(vehicleType), FuelType.valueOf(fuelType));
                 collection.add(vehicle);
             } else if (command.equals("update")) {
-                int id = Integer.parseInt(reader.readLine());
+                int id = Integer.parseInt(commands[1]);
                 String name = reader.readLine();
                 Float x = Float.parseFloat(reader.readLine());
                 Double y = Double.parseDouble(reader.readLine());
@@ -184,14 +187,15 @@ public class MyReader {
                 Vehicle vehicle = new Vehicle(name, coordinates, enginePower, capacity, VehicleType.valueOf(vehicleType), FuelType.valueOf(fuelType));
                 collection.update(id, vehicle);
             } else if (command.equals("remove_by_id")) {
-                int id = Integer.parseInt(reader.readLine());
+                int id = Integer.parseInt(commands[1]);
                 collection.removeById(id);
             } else if (command.equals("clear")) {
                 collection.clear();
             } else if (command.equals("save")) {
                 collection.save(saveFile);
             } else if (command.equals("execute_script")) {
-                String sName = reader.readLine();
+                String sName = commands[1];
+                if (scriptFile.equals(sName)) throw new FileCycleException();
                 readScript(sName, saveFile, collection);
             } else if (command.equals("remove_first")) {
                 collection.removeFirst();
@@ -210,7 +214,7 @@ public class MyReader {
                         capacity, VehicleType.valueOf(vehicleType), FuelType.valueOf(fuelType));
                 collection.addIfMax(vehicle);
             } else if (command.equals("remove_any_by_fuel_type")) {
-                String fuelType = reader.readLine();
+                String fuelType = commands[1];
                 collection.removeByFuelType(fuelType);
             } else if (command.equals("max_by_name")) {
                 collection.getMaxName();

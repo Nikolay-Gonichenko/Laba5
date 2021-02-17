@@ -1,11 +1,7 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Reader;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.ForkJoinPool;
-
 /**
  * @author Gonichenko Nikolay R3136
  * This is main class
@@ -177,15 +173,21 @@ public class Main {
                             }
                             MyReader.readScript(scriptName, fileName, collection);
                             break;
+                        } catch (FileCycleException e){
+                            System.out.println("Cycling in the script");
                         } catch (FileNotFoundException e) {
                             System.out.println("File doesn't exist. Enter command and scriptName again");
                             count_check1++;
                         } catch (IOException | IllegalArgumentException e) {
                             count_check1++;
-                            System.out.println("Command in file incorrect. Executing of file has stopped.");
+                            System.out.println("Command or data in file is incorrect. Executing of file has stopped.");
                         } catch (IndexOutOfBoundsException e) {
+                            if (count_check1==1){
+                                System.out.println("You didn't enter a scriptName. Do it");
+                            }else{
+                                System.out.println("Some command doesn't have argument");
+                            }
                             count_check1++;
-                            System.out.println("You didn't enter a scriptName. Do it");
                         }
                     }
                     break;
