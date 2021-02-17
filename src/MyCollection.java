@@ -125,8 +125,12 @@ public class MyCollection {
      * @param vehicleAddIfMax
      */
     public void addIfMax(Vehicle vehicleAddIfMax) {
-        if (vehicleAddIfMax.compareTo(this.getMax()) > 0) {
+        if (queue.isEmpty()){
             queue.offer(vehicleAddIfMax);
+        }else{
+            if (vehicleAddIfMax.compareTo(this.getMax()) > 0) {
+                queue.offer(vehicleAddIfMax);
+            }
         }
     }
     /**
@@ -168,8 +172,16 @@ public class MyCollection {
             s.append("      <Y>").append(vehicle.getCoordinates().getY()).append("</Y>\n");
             s.append("      <EnginePower>").append(vehicle.getEnginePower()).append("</EnginePower>\n");
             s.append("      <Capacity>").append(vehicle.getCapacity()).append("</Capacity>\n");
-            s.append("      <VehicleType>").append(vehicle.getVehicleType().toString()).append("</VehicleType>\n");
-            s.append("      <FuelType>").append(vehicle.getFuelType().toString()).append("</FuelType>\n");
+            if (vehicle.getVehicleType() != null){
+                s.append("      <VehicleType>").append(vehicle.getVehicleType().toString()).append("</VehicleType>\n");
+            }else{
+                s.append("      <VehicleType>").append("null").append("</VehicleType>\n");
+            }
+            if (vehicle.getFuelType() != null){
+                s.append("      <FuelType>").append(vehicle.getFuelType().toString()).append("</FuelType>\n");
+            }else{
+                s.append("      <FuelType>").append("null").append("</FuelType>\n");
+            }
             s.append("  </Vehicle>\n");
         }
         s.append("</Vehicles>");
@@ -215,7 +227,7 @@ public class MyCollection {
                     s = prom;
                 }
             }
-            return "Max element is"+s;
+            return "Max element is "+s;
         }else{
             return  "Collection is empty. Add element firstly";
         }
@@ -289,8 +301,20 @@ public class MyCollection {
                     fuelType = matcher.group(1);
                     count = 0;
                     if (!name.isEmpty()) {
+                        VehicleType vehicleType1;
+                        FuelType fuelType1;
+                        try{
+                            vehicleType1 = VehicleType.valueOf(vehicleType);
+                        }catch (IllegalArgumentException e){
+                            vehicleType1 = null;
+                        }
+                        try{
+                            fuelType1 = FuelType.valueOf(fuelType);
+                        }catch (IllegalArgumentException e){
+                            fuelType1 = null;
+                        }
                         Vehicle vehicle = new Vehicle(name, new Coordinates(x, y), enginePower,
-                                capacity, VehicleType.valueOf(vehicleType), FuelType.valueOf(fuelType));
+                                capacity, vehicleType1, fuelType1);
                         this.add(vehicle);
                     }
                 }
