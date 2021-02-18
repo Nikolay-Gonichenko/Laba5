@@ -18,4 +18,13 @@
       <VehicleType>null</VehicleType>
       <FuelType>null</FuelType>
   </Vehicle>
+  <Vehicle>
+      <Name>kok</Name>
+      <X>90.0</X>
+      <Y>90.0</Y>
+      <EnginePower>90.0</EnginePower>
+      <Capacity>90</Capacity>
+      <VehicleType>null</VehicleType>
+      <FuelType>null</FuelType>
+  </Vehicle>
 </Vehicles>
