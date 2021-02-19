@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -14,8 +15,8 @@ public class MyReader {
     private static boolean chekByZero(String line) {
         boolean check = false;
         char[] chars = line.toCharArray();
-        if (chars.length > 1) {
-            if (chars[0] == '0' && chars[1] != '.' || chars[0] == '-' && chars[1] == '0' && chars[2] != '.') {
+        if (chars.length > 1 && !line.equals("-0")) {
+            if (chars[0] == '0' && chars[1] != '.' || chars[0] == '-' && chars[1] == '0' && chars[2] != '.'){
                 check = false;
             } else {
                 check = true;
@@ -38,7 +39,7 @@ public class MyReader {
                 break;
             }
         }
-        System.out.println("Enter X coordinate:");
+        System.out.println("Enter X coordinate (X is float and > -898):");
         String x_check;
         float x;
         while (true) {
@@ -47,16 +48,20 @@ public class MyReader {
                 if (chekByZero(x_check)) {
                     x = Float.parseFloat(x_check);
                     if (x > -898) {
-                        break;
+                        if (x<=Float.MAX_VALUE){
+                            break;
+                        }else throw new TooBigNumberException();
                     } else throw new NumberFormatException();
                 } else throw new ZeroCheckException();
+            } catch (TooBigNumberException e){
+                System.out.println("You tried to enter too big number");
             } catch (ZeroCheckException e) {
                 System.out.println("You wrote '000000' or '-000000' or something same. If you want fill field like 0(1/etc),please write just 0(1/etc)");
             } catch (NumberFormatException e) {
                 System.out.println("X has to be float type and  > -898.Try again");
             }
         }
-        System.out.println("Enter Y coordinate:");
+        System.out.println("Enter Y coordinate (Y is double):");
         String y_check;
         double y;
         while (true) {
@@ -64,8 +69,12 @@ public class MyReader {
             try {
                 if (chekByZero(y_check)) {
                     y = Double.parseDouble(y_check);
-                    break;
+                    if (y<=Double.MAX_VALUE && y>=Double.MIN_VALUE){
+                        break;
+                    }else throw new TooBigNumberException();
                 } else throw new ZeroCheckException();
+            }catch (TooBigNumberException e){
+                System.out.println("You tried to enter too big or too small number");
             } catch (ZeroCheckException e) {
                 System.out.println("You wrote '000000' or '-000000' or something same. If you want fill field like 0(1/etc),please write just 0(1/etc)");
             } catch (NumberFormatException e) {
@@ -73,7 +82,7 @@ public class MyReader {
             }
         }
         Coordinates coordinates = new Coordinates(x, y);
-        System.out.println("Enter Engine power:");
+        System.out.println("Enter Engine power (EnginePower is float and >0):");
         String enginePower_check;
         float enginePower;
         while (true) {
@@ -82,16 +91,20 @@ public class MyReader {
                 enginePower = Float.parseFloat(enginePower_check);
                 if (chekByZero(enginePower_check)) {
                     if (enginePower > 0) {
-                        break;
+                        if (enginePower<=Float.MAX_VALUE){
+                            break;
+                        }else throw new TooBigNumberException();
                     } else throw new NumberFormatException();
                 } else throw new ZeroCheckException();
+            } catch (TooBigNumberException e){
+                System.out.println("You tried to enter too big number");
             } catch (ZeroCheckException e) {
                 System.out.println("You wrote '000000' or '-000000' or something same. If you want fill field like 0(1/etc),please write just 0(1/etc)");
             } catch (NumberFormatException e) {
                 System.out.println("Engine power has to be float and > 0. Try again");
             }
         }
-        System.out.println("Enter capacity:");
+        System.out.println("Enter capacity (Capacity is int and >0):");
         String capacity_check;
         int capacity;
         while (true) {

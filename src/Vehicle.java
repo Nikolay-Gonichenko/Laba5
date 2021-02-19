@@ -6,7 +6,7 @@ import java.util.Objects;
  * Class of elements which is contained in collection
  */
 public class Vehicle implements Comparable<Vehicle> {
-    private static int ID_START = 1;
+    private static int ID_START;
     private int id;
     private String name;
     private Coordinates coordinates;
@@ -15,14 +15,18 @@ public class Vehicle implements Comparable<Vehicle> {
     private int capacity;
     private VehicleType vehicleType;
     private FuelType fuelType;
+    private boolean inFile;
 
 
+    public static void setIdStart(int idStart) {
+        ID_START = idStart;
+    }
 
     @Override
     public int compareTo(Vehicle vehicle) {
-        if (id > vehicle.getId())
+        if (enginePower > vehicle.getEnginePower())
             return 1;
-        if (id < vehicle.getId())
+        if (enginePower < vehicle.getEnginePower())
             return -1;
         return name.compareTo(vehicle.getName());
     }
@@ -56,6 +60,7 @@ public class Vehicle implements Comparable<Vehicle> {
         this.capacity = capacity;
         this.vehicleType = type;
         this.fuelType = fuelType;
+        inFile = false;
     }
     public Vehicle(int id, String name, Coordinates coordinates, float enginePower, int capacity, VehicleType vehicleType, FuelType fuelType) {
         this.id = id;
@@ -66,6 +71,24 @@ public class Vehicle implements Comparable<Vehicle> {
         this.capacity = capacity;
         this.vehicleType = vehicleType;
         this.fuelType = fuelType;
+        inFile = false;
+    }
+
+    public Vehicle(int id, String name, Coordinates coordinates, LocalDateTime creationDate,
+                   float enginePower, int capacity, VehicleType vehicleType, FuelType fuelType) {
+        this.id = id;
+        this.name = name;
+        this.coordinates = coordinates;
+        this.creationDate = creationDate;
+        this.enginePower = enginePower;
+        this.capacity = capacity;
+        this.vehicleType = vehicleType;
+        this.fuelType = fuelType;
+        inFile = true;
+    }
+
+    public boolean isInFile() {
+        return inFile;
     }
 
     public int getId() {
