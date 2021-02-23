@@ -177,10 +177,11 @@ public class MyCollection {
         Queue<Vehicle> printQueue = new PriorityQueue<>(queue);
         while (!printQueue.isEmpty()) {
             Vehicle vehicle = printQueue.poll();
+
             if (!vehicle.isInFile()) {
                 s.append("  <Vehicle>\n");
-                s.append("      <Id>").append(vehicle.getId()).append("</Id>\n");
                 s.append("      <Name>").append(vehicle.getName()).append("</Name>\n");
+                s.append("      <Id>").append(vehicle.getId()).append("</Id>\n");
                 s.append("      <X>").append(vehicle.getCoordinates().getX()).append("</X>\n");
                 s.append("      <Y>").append(vehicle.getCoordinates().getY()).append("</Y>\n");
                 if (vehicle.getCreationDate() != null) {
@@ -202,6 +203,7 @@ public class MyCollection {
                 }
                 s.append("  </Vehicle>\n");
             }
+            isFile(vehicle.getId());
         }
         s.append("</Vehicles>");
         byte[] buffer = s.toString().getBytes();
@@ -214,6 +216,19 @@ public class MyCollection {
             fos.close();
         }
 
+    }
+
+    /**
+     * Private method for setting checkInFile as true
+     * @param id
+     * @return
+     */
+    private void isFile(int id){
+        for (Vehicle v:queue){
+            if (v.getId()==id){
+                v.setInFile(true);
+            }
+        }
     }
 
     /**
@@ -285,7 +300,7 @@ public class MyCollection {
             line = line1.trim();
             if (!line.equals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
                     && !line.equals("<Vehicles>") && !line.equals("<Vehicle>") && !line.equals("</Vehicles>") && !line.equals("</Vehicle>")) {
-                if (count == 0) {
+                if (count == 1) {
                     final Pattern pattern = Pattern.compile("<Id>(" + regex2 + ")</Id>", Pattern.DOTALL);
                     final Matcher matcher = pattern.matcher(line);
                     if (matcher.find()) {
@@ -304,7 +319,7 @@ public class MyCollection {
                         countOfBrokenObjects++;
                         namesOfBrokenObjects.add(name);
                     }
-                } else if (count == 1) {
+                } else if (count == 0) {
                     final Pattern pattern = Pattern.compile("<Name>(" + regex1 + ")</Name>", Pattern.DOTALL);
                     final Matcher matcher = pattern.matcher(line);
                     if (matcher.find()) {
@@ -474,6 +489,11 @@ public class MyCollection {
         }
     }
 
+    /**
+     * Private Method for finding max element by ID
+     * @param queue
+     * @return
+     */
     private int findMaxId(Queue<Vehicle> queue) {
         int max = 0;
         for (Vehicle v : queue) {

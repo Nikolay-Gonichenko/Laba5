@@ -12,6 +12,11 @@ import java.util.Set;
  * Class for reading
  */
 public class MyReader {
+    /**
+     * Check file on big amounts of zero
+     * @param line
+     * @return
+     */
     private static boolean chekByZero(String line) {
         boolean check = false;
         char[] chars = line.toCharArray();
@@ -40,13 +45,13 @@ public class MyReader {
             }
         }
         System.out.println("Enter X coordinate (X is float and > -898):");
-        String x_check;
+        String xCheck;
         float x;
         while (true) {
-            x_check = scanner.nextLine();
+            xCheck = scanner.nextLine();
             try {
-                if (chekByZero(x_check)) {
-                    x = Float.parseFloat(x_check);
+                if (chekByZero(xCheck)) {
+                    x = Float.parseFloat(xCheck);
                     if (x > -898) {
                         if (x<=Float.MAX_VALUE){
                             break;
@@ -62,13 +67,13 @@ public class MyReader {
             }
         }
         System.out.println("Enter Y coordinate (Y is double):");
-        String y_check;
+        String yCheck;
         double y;
         while (true) {
-            y_check = scanner.nextLine();
+            yCheck = scanner.nextLine();
             try {
-                if (chekByZero(y_check)) {
-                    y = Double.parseDouble(y_check);
+                if (chekByZero(yCheck)) {
+                    y = Double.parseDouble(yCheck);
                     if (y<=Double.MAX_VALUE && y>=Double.MIN_VALUE){
                         break;
                     }else throw new TooBigNumberException();
@@ -83,13 +88,13 @@ public class MyReader {
         }
         Coordinates coordinates = new Coordinates(x, y);
         System.out.println("Enter Engine power (EnginePower is float and >0):");
-        String enginePower_check;
+        String enginePowerCheck;
         float enginePower;
         while (true) {
-            enginePower_check = scanner.nextLine();
+            enginePowerCheck = scanner.nextLine();
             try {
-                enginePower = Float.parseFloat(enginePower_check);
-                if (chekByZero(enginePower_check)) {
+                enginePower = Float.parseFloat(enginePowerCheck);
+                if (chekByZero(enginePowerCheck)) {
                     if (enginePower > 0) {
                         if (enginePower<=Float.MAX_VALUE){
                             break;
@@ -105,13 +110,13 @@ public class MyReader {
             }
         }
         System.out.println("Enter capacity (Capacity is int and >0):");
-        String capacity_check;
+        String capacityCheck;
         int capacity;
         while (true) {
-            capacity_check = scanner.nextLine();
+            capacityCheck = scanner.nextLine();
             try {
-                if (chekByZero(capacity_check)) {
-                    capacity = Integer.parseInt(capacity_check);
+                if (chekByZero(capacityCheck)) {
+                    capacity = Integer.parseInt(capacityCheck);
                     if (capacity > 0) {
                         break;
                     } else throw new NumberFormatException();
@@ -123,19 +128,19 @@ public class MyReader {
             }
         }
         System.out.println("Choose type of vehicle: " + VehicleType.showAllValues());
-        String vehicleType_check = scanner.nextLine();
+        String vehicleTypeCheck = scanner.nextLine();
         VehicleType vehicleType;
         try {
-            vehicleType = VehicleType.valueOf(vehicleType_check);
+            vehicleType = VehicleType.valueOf(vehicleTypeCheck);
         } catch (IllegalArgumentException e) {
             System.out.println("You tried to enter incorrect data. The field will be null");
             vehicleType = null;
         }
         System.out.println("Choose type of fuel: " + FuelType.showAllValues());
-        String fuelType_check = scanner.nextLine();
+        String fuelTypeCheck = scanner.nextLine();
         FuelType fuelType;
         try {
-            fuelType = FuelType.valueOf(fuelType_check);
+            fuelType = FuelType.valueOf(fuelTypeCheck);
         } catch (IllegalArgumentException e) {
             System.out.println("You tried to enter incorrect data. The field will be null");
             fuelType = null;

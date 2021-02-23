@@ -64,27 +64,27 @@ public class Main {
                     collection.add(vehicle);
                     break;
                 case "update":
-                    String id_check;
+                    String idCheck;
                     int countCheckToUpdate = 1;
                     int id;
                     while (true) {
                         try {
                             if (countCheckToUpdate==1){
-                                id_check = commands[1];
+                                idCheck = commands[1];
                             }else{
                                 System.out.println("Enter an id");
-                                id_check = scanner.nextLine();
+                                idCheck = scanner.nextLine();
                             }
-                            id = Integer.parseInt(id_check);
+                            id = Integer.parseInt(idCheck);
                             if (id > 0) {
-                                boolean check_in_queue = false;
+                                boolean checkInQueue = false;
                                 for (Vehicle v : collection.getQueue()) {
                                     if (v.getId() == id) {
-                                        check_in_queue = true;
+                                        checkInQueue = true;
                                         break;
                                     }
                                 }
-                                if (check_in_queue) {
+                                if (checkInQueue) {
                                     break;
                                 } else throw new IllegalArgumentException();
                             } else {
@@ -106,34 +106,34 @@ public class Main {
                     break;
                 case "remove_by_id":
                     if (!collection.checkToEmpty()) {
-                        String idToRemove_check;
-                        int count_check = 1;
+                        String idToRemoveCheck;
+                        int countCheck = 1;
                         int idToRemove;
                         while (true) {
                             try {
-                                if (count_check == 1) {
-                                    idToRemove_check = commands[1];
+                                if (countCheck == 1) {
+                                    idToRemoveCheck = commands[1];
                                 } else {
                                     System.out.println("Please enter an id of element ");
-                                    idToRemove_check = scanner.nextLine();
+                                    idToRemoveCheck = scanner.nextLine();
                                 }
-                                idToRemove = Integer.parseInt(idToRemove_check);
+                                idToRemove = Integer.parseInt(idToRemoveCheck);
                                 if (idToRemove > 0) {
-                                    boolean check_in_queue = false;
+                                    boolean checkInQueue = false;
                                     for (Vehicle v : collection.getQueue()) {
                                         if (v.getId() == idToRemove) {
-                                            check_in_queue = true;
+                                            checkInQueue = true;
                                             break;
                                         }
                                     }
-                                    if (check_in_queue) {
+                                    if (checkInQueue) {
                                         break;
                                     } else {
-                                        count_check++;
+                                        countCheck++;
                                         throw new IllegalArgumentException();
                                     }
                                 } else {
-                                    count_check++;
+                                    countCheck++;
                                     throw new NumberFormatException();
                                 }
                             } catch (NumberFormatException e) {
@@ -141,7 +141,7 @@ public class Main {
                             } catch (IllegalArgumentException e) {
                                 System.out.println("You entered id of element which doesn't exist.Try again");
                             } catch (IndexOutOfBoundsException e) {
-                                count_check++;
+                                countCheck++;
                                 System.out.println("You didn't enter an id. Do it");
                             }
                         }
@@ -156,17 +156,17 @@ public class Main {
                 case "save":
                     try {
                         collection.save(fileName);
-                        System.out.println("Data is saved to Input.xml");
+                        System.out.println("Data is saved to "+fileName);
                     } catch (IOException e) {
                         System.out.println("File doesn't exist. Enter a command");
                     }
                     break;
                 case "execute_script":
                     String scriptName;
-                    int count_check1 = 1;
+                    int countCheck1 = 1;
                     while (true) {
                         try {
-                            if (count_check1 == 1) {
+                            if (countCheck1 == 1) {
                                 scriptName = commands[1];
                             } else {
                                 System.out.println("Enter a scriptName");
@@ -178,17 +178,17 @@ public class Main {
                             System.out.println("Cycling in the script");
                         } catch (FileNotFoundException e) {
                             System.out.println("File doesn't exist. Enter command and scriptName again");
-                            count_check1++;
+                            countCheck1++;
                         } catch (IOException | IllegalArgumentException e) {
-                            count_check1++;
+                            countCheck1++;
                             System.out.println("Command or data in file is incorrect. Executing of file has stopped.");
                         } catch (IndexOutOfBoundsException e) {
-                            if (count_check1==1){
+                            if (countCheck1==1){
                                 System.out.println("You didn't enter a scriptName. Do it");
                             }else{
                                 System.out.println("Some command doesn't have argument");
                             }
-                            count_check1++;
+                            countCheck1++;
                         }
                     }
                     break;
@@ -208,12 +208,12 @@ public class Main {
                     break;
                 case "add_if_max":
                     System.out.println("Please enter an id of element");
-                    String idCheck;
+                    String idCheck2;
                     int idAddIfMax;
                     while (true) {
-                        idCheck = scanner.nextLine();
+                        idCheck2 = scanner.nextLine();
                         try {
-                            idAddIfMax = Integer.parseInt(idCheck);
+                            idAddIfMax = Integer.parseInt(idCheck2);
                             if (idAddIfMax > 0) {
                                 break;
                             }
@@ -227,10 +227,10 @@ public class Main {
                 case "remove_any_by_fuel_type":
                     if (!collection.checkToEmpty()) {
                         String fuelType;
-                        int count_check2 = 1;
+                        int countCheck2 = 1;
                         while (true) {
                             try {
-                                if (count_check2 == 1) {
+                                if (countCheck2 == 1) {
                                     fuelType = commands[1];
                                 } else {
                                     System.out.println("Enter a FuelType");
@@ -239,10 +239,10 @@ public class Main {
                                 collection.removeByFuelType(fuelType);
                                 break;
                             } catch (IllegalArgumentException e) {
-                                count_check2++;
+                                countCheck2++;
                                 System.out.println("This FuelType doesn't exist. Try again");
                             } catch (IndexOutOfBoundsException e) {
-                                count_check2++;
+                                countCheck2++;
                                 System.out.println("You didn't enter a fuelType. Do it");
                             }
                         }

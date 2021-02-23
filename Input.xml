@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Vehicles>
     <Vehicle>
-        <Id>2</Id>
         <Name>kek</Name>
+        <Id>2</Id>
         <X>10.0</X>
         <Y>10.0</Y>
         <CreationDate>2021-02-19T09:13:23.663</CreationDate>
@@ -12,8 +12,8 @@
         <FuelType>null</FuelType>
     </Vehicle>
     <Vehicle>
-        <Id>10</Id>
         <Name>name</Name>
+        <Id>10</Id>
         <X>10.0</X>
         <Y>10.0</Y>
         <CreationDate>2021-02-19T09:13:23.662</CreationDate>
@@ -23,8 +23,8 @@
         <FuelType>PLASMA</FuelType>
     </Vehicle>
     <Vehicle>
-        <Id>3</Id>
         <Name>kok</Name>
+        <Id>3</Id>
         <X>90.0</X>
         <Y>90.0</Y>
         <CreationDate>2021-02-19T09:13:23.663</CreationDate>
@@ -34,8 +34,8 @@
         <FuelType>null</FuelType>
     </Vehicle>
     <Vehicle>
-        <Id>11</Id>
         <Name>cool</Name>
+        <Id>11</Id>
         <X>90.0</X>
         <Y>999.0</Y>
         <CreationDate>2021-02-19T20:11:01.589</CreationDate>
@@ -45,25 +45,25 @@
         <FuelType>KEROSENE</FuelType>
     </Vehicle>
   <Vehicle>
+      <Name>popa</Name>
       <Id>12</Id>
-      <Name>top</Name>
       <X>10.0</X>
       <Y>10.0</Y>
-      <CreationDate>2021-02-19T21:00:18.595</CreationDate>
+      <CreationDate>2021-02-23T19:32:33.559</CreationDate>
       <EnginePower>10.0</EnginePower>
       <Capacity>10</Capacity>
-      <VehicleType>CHOPPER</VehicleType>
-      <FuelType>NUCLEAR</FuelType>
+      <VehicleType>null</VehicleType>
+      <FuelType>null</FuelType>
   </Vehicle>
   <Vehicle>
+      <Name>popa2</Name>
       <Id>13</Id>
-      <Name>lol</Name>
       <X>10.0</X>
       <Y>10.0</Y>
-      <CreationDate>2021-02-19T21:34:47.941</CreationDate>
-      <EnginePower>10.0</EnginePower>
-      <Capacity>10</Capacity>
-      <VehicleType>CHOPPER</VehicleType>
-      <FuelType>PLASMA</FuelType>
+      <CreationDate>2021-02-23T19:43:57.193</CreationDate>
+      <EnginePower>1.0</EnginePower>
+      <Capacity>1</Capacity>
+      <VehicleType>null</VehicleType>
+      <FuelType>null</FuelType>
   </Vehicle>
 </Vehicles>

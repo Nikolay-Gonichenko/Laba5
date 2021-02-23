@@ -91,6 +91,10 @@ public class Vehicle implements Comparable<Vehicle> {
         return inFile;
     }
 
+    public void setInFile(boolean inFile) {
+        this.inFile = inFile;
+    }
+
     public int getId() {
         return id;
     }
