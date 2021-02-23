@@ -12,7 +12,7 @@ public class Main {
     /**
      * This is start point of program
      *
-     * @param args
+     * @param args [0] - name of input file
      */
     public static void main(String[] args) {
         printOut();

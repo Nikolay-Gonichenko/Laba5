@@ -14,7 +14,7 @@ import java.util.Set;
 public class MyReader {
     /**
      * Check file on big amounts of zero
-     * @param line
+     * @param line - line where could be some problem with a lot of zeros
      * @return
      */
     private static boolean chekByZero(String line) {
@@ -31,8 +31,8 @@ public class MyReader {
     }
 
     /**
-     * Method gets new Vehicle from User
-     *
+     * Method gets new <i>Vehicle</i> from User
+     * @param scanner
      * @return Vehicle
      */
     public static Vehicle getElementFromConsole(Scanner scanner) {
@@ -149,6 +149,12 @@ public class MyReader {
         return vehicle;
     }
 
+    /**
+     * Method for updating element by ID
+     * @param scanner
+     * @param id
+     * @return
+     */
     public static Vehicle getElementFromConsoleToUpdate(Scanner scanner, int id) {
         Vehicle vehicle = getElementFromConsole(scanner);
         String name = vehicle.getName();
@@ -166,7 +172,7 @@ public class MyReader {
      *
      * @param scriptFile
      * @param saveFile
-     * @param collection
+     * @param collection - Object of class, which contains Queue
      * @throws IOException
      * @throws IllegalArgumentException
      */

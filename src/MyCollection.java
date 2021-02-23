@@ -490,9 +490,9 @@ public class MyCollection {
     }
 
     /**
-     * Private Method for finding max element by ID
+     * Private Method for finding max element by ID in collection <i>queue</i>
      * @param queue
-     * @return
+     * @return maxElement
      */
     private int findMaxId(Queue<Vehicle> queue) {
         int max = 0;
